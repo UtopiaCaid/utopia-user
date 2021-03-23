@@ -32,4 +32,17 @@ public class FlightsService {
 		}		
 	}
 	
+	public Flights getFlightById(Integer id) throws RecordNotFoundException {
+		try {
+			Optional<Flights> possibleFlight = FlightsRepo.findById(id);
+			if(possibleFlight.isPresent()) {
+				return possibleFlight.get();
+			} else {
+				throw new RecordNotFoundException();
+			}
+		}catch(Exception e) {
+			throw new RecordNotFoundException();
+		}
+	}
+	
 }

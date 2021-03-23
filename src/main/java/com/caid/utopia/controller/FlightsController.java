@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,23 +26,31 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 @RestController
 public class FlightsController {
 
-	@ExceptionHandler(RecordNotFoundException.class)
-	  @ResponseStatus(HttpStatus.NOT_FOUND)
-	  public ResponseEntity<String> handleNoSuchElementFoundException(
-			  RecordNotFoundException exception
-	  ) {
-	    return ResponseEntity
-	        .status(HttpStatus.NOT_FOUND)
-	        .body(exception.getMessage());
-	  }
+	
+	
 	
 	@Autowired
 	FlightsService flightsService;
 	
-	@RequestMapping(value = "/getAllFlights", method = RequestMethod.GET, produces = "application/json")
-	public List<Flights> getAllFlights(){
-		return flightsService.getAllFlights();
-		//return flightsService.getAllFlights();
+	@ExceptionHandler(RecordNotFoundException.class)
+	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<Flights>> getAllFlights(){
+		List<Flights> flights = flightsService.getAllFlights();
+		if (flights.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}else {
+			return new ResponseEntity<>(flights, HttpStatus.OK);
+		}
+		
+	}
+	
+//	@ExceptionHandler(RecordNotFoundException.class)
+	@RequestMapping(value = "/flights/{flightId}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Flights> getAllFlights(@PathVariable Integer flightId){
+		Flights flights = flightsService.getFlightById(flightId);
+		return new ResponseEntity<>(flights, HttpStatus.OK);
+
+		
 	}
 	
 }
