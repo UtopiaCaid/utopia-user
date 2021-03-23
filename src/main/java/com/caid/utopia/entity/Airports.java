@@ -45,7 +45,7 @@ public class Airports implements Serializable {
 	@NonNull
 	private String city;
 	
-	@Column(name = "airportName", length = 45)
+	@Column(name = "airport_name", length = 45)
 	@NonNull
 	private String airportName;
 	

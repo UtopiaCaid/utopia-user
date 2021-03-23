@@ -39,7 +39,7 @@ public class Accounts implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id")
-	private AircraftType roleId;
+	private AccountRoles role;
 	
 	@Column(name = "username", length = 45)
 	@NonNull
@@ -65,12 +65,12 @@ public class Accounts implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public AircraftType getRoleId() {
-		return roleId;
+	public AccountRoles getRoleId() {
+		return role;
 	}
 
-	public void setRoleId(AircraftType roleId) {
-		this.roleId = roleId;
+	public void setRoleId(AccountRoles role) {
+		this.role = role;
 	}
 
 	public String getUsername() {
