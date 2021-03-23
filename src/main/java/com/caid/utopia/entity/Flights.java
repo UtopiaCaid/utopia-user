@@ -5,17 +5,22 @@ package com.caid.utopia.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
@@ -51,8 +56,13 @@ public class Flights implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "aircraft_id")
-	private Integer aircraftId;
+	private Aircraft aircraft;
 	
+	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<Tickets> tickets;
+	
+
 	@Column(name = "basePrice")
 	@NonNull
 	private float basePrice;
@@ -68,6 +78,14 @@ public class Flights implements Serializable {
 	@Column(name = "status", length = 45)
 	@NonNull
 	private String status;
+	
+	public Aircraft getAircraft() {
+		return aircraft;
+	}
+
+	public void setAircraft(Aircraft aircraft) {
+		this.aircraft = aircraft;
+	}
 
 	public Integer getFlightNo() {
 		return flightNo;
@@ -101,13 +119,7 @@ public class Flights implements Serializable {
 		this.airportIdArrival = airportIdArrival;
 	}
 
-	public Integer getAircraftId() {
-		return aircraftId;
-	}
 
-	public void setAircraftId(Integer aircraftId) {
-		this.aircraftId = aircraftId;
-	}
 
 	public float getBasePrice() {
 		return basePrice;

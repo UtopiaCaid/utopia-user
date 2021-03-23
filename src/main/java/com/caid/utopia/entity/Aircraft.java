@@ -37,17 +37,17 @@ public class Aircraft implements Serializable {
 	@Column(name = "aircraft_id")
 	private Integer aircraftId;
 		
-	@Column(name = "seatCount")
+	@Column(name = "first_class_count")
 	@NonNull
-	private Integer first_class_count;
+	private Integer firstClassCount;
 
-	@Column(name = "seatCount")
+	@Column(name = "second_class_count")
 	@NonNull
-	private Integer second_class_count;
+	private Integer secondClassCount;
 	
-	@Column(name = "seatCount")
+	@Column(name = "third_class_count")
 	@NonNull
-	private Integer third_class_count;
+	private Integer thirdClassCount;
 	
 	@ManyToOne
 	@JoinColumn(name = "aircraft_type_id")
@@ -61,28 +61,28 @@ public class Aircraft implements Serializable {
 		this.aircraftId = aircraftId;
 	}
 
-	public Integer getFirst_class_count() {
-		return first_class_count;
+	public Integer getFirstClassCount() {
+		return firstClassCount;
 	}
 
-	public void setFirst_class_count(Integer first_class_count) {
-		this.first_class_count = first_class_count;
+	public void setFirstClassCount(Integer firstClassCount) {
+		this.firstClassCount = firstClassCount;
 	}
 
-	public Integer getSecond_class_count() {
-		return second_class_count;
+	public Integer getSecondClassCount() {
+		return secondClassCount;
 	}
 
-	public void setSecond_class_count(Integer second_class_count) {
-		this.second_class_count = second_class_count;
+	public void setSecondClassCount(Integer secondClassCount) {
+		this.secondClassCount = secondClassCount;
 	}
 
-	public Integer getThird_class_count() {
-		return third_class_count;
+	public Integer getThirdClassCount() {
+		return thirdClassCount;
 	}
 
-	public void setThird_class_count(Integer third_class_count) {
-		this.third_class_count = third_class_count;
+	public void setThirdClassCount(Integer thirdClassCount) {
+		this.thirdClassCount = thirdClassCount;
 	}
 
 	public AircraftType getAircraftType() {
@@ -92,6 +92,8 @@ public class Aircraft implements Serializable {
 	public void setAircraftType(AircraftType aircraftType) {
 		this.aircraftType = aircraftType;
 	}
+
+
 
 	
 }
