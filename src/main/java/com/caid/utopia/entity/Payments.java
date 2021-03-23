@@ -40,7 +40,7 @@ public class Payments implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "account_number")
-	private Integer account_number;
+	private Accounts accounts;
 
 	@Column(name = "date_processed")
 	@NonNull
@@ -54,14 +54,6 @@ public class Payments implements Serializable {
 		this.paymentId = paymentId;
 	}
 
-	public Integer getAccount_number() {
-		return account_number;
-	}
-
-	public void setAccount_number(Integer account_number) {
-		this.account_number = account_number;
-	}
-
 	public LocalDate getDateProcessed() {
 		return dateProcessed;
 	}
@@ -70,6 +62,13 @@ public class Payments implements Serializable {
 		this.dateProcessed = dateProcessed;
 	}
 	
+	public Accounts getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Accounts accounts) {
+		this.accounts = accounts;
+	}
 	
 }
 

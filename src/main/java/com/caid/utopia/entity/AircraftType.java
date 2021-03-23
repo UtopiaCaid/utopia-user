@@ -50,7 +50,7 @@ public class AircraftType implements Serializable {
 	@NonNull
 	private String manufacturer;
 
-	@OneToMany(mappedBy = "aircraft_type_id", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "aircraftType", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private List<Aircraft> aircraft;
 	

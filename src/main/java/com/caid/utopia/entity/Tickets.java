@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+@Entity
+@Table(name = "tbl_ticket")
 public class Tickets implements Serializable {
 	/**
 	 * 
@@ -30,19 +34,19 @@ public class Tickets implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "account_number")
-	private Integer account_number;
+	private Accounts account;
 
-	@OneToMany(mappedBy = "flight_no", fetch = FetchType.LAZY)
-	@JsonBackReference
-	private List<Aircraft> flightNo;
+	@ManyToOne
+	@JoinColumn(name = "flight_no")
+	private Flights flight;
 	
 	@ManyToOne
 	@JoinColumn(name = "traveler_id")
-	private Integer travelerId;
+	private Travelers traveler;
 	
 	@ManyToOne
 	@JoinColumn(name = "payment_id")
-	private Integer paymentId;
+	private Payments payment;
 	
 	@Column(name = "confirmation_code")
 	@NonNull
@@ -64,36 +68,37 @@ public class Tickets implements Serializable {
 		this.ticketNo = ticketNo;
 	}
 
-	public Integer getAccount_number() {
-		return account_number;
+
+	public Flights getFlight() {
+		return flight;
 	}
 
-	public void setAccount_number(Integer account_number) {
-		this.account_number = account_number;
+	public void setFlight(Flights flight) {
+		this.flight = flight;
 	}
 
-	public List<Aircraft> getFlightNo() {
-		return flightNo;
+	public Travelers getTraveler() {
+		return traveler;
 	}
 
-	public void setFlightNo(List<Aircraft> flightNo) {
-		this.flightNo = flightNo;
+	public void setTraveler(Travelers traveler) {
+		this.traveler = traveler;
 	}
 
-	public Integer getTravelerId() {
-		return travelerId;
+	public Accounts getAccount() {
+		return account;
 	}
 
-	public void setTravelerId(Integer travelerId) {
-		this.travelerId = travelerId;
+	public void setAccount(Accounts account) {
+		this.account = account;
 	}
 
-	public Integer getPaymentId() {
-		return paymentId;
+	public Payments getPayment() {
+		return payment;
 	}
 
-	public void setPaymentId(Integer paymentId) {
-		this.paymentId = paymentId;
+	public void setPayment(Payments payment) {
+		this.payment = payment;
 	}
 
 	public Integer getConfirmationCode() {
