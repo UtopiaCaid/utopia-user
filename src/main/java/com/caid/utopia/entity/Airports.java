@@ -54,11 +54,11 @@ public class Airports implements Serializable {
 	private String status;
 
 	@OneToMany(mappedBy = "airportIdArrival", fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonBackReference(value = "departure")
 	private List<Flights> arrivalFlights;
 
 	@OneToMany(mappedBy = "airportIdDeparture", fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonBackReference(value = "arrival")
 	private List<Flights> departureFlights;
 
 	public Integer getAirportId() {
