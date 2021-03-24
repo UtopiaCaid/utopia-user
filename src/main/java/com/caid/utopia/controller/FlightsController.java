@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.caid.utopia.entity.Flights;
 import com.caid.utopia.service.FlightsService;
 
+import exception.FlightByIdException;
+import exception.FlightCreationException;
 import exception.RecordNotFoundException;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 
@@ -44,13 +46,23 @@ public class FlightsController {
 		
 	}
 	
-//	@ExceptionHandler(RecordNotFoundException.class)
+	@ExceptionHandler(FlightByIdException.class)
 	@RequestMapping(value = "/flights/{flightId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Flights> getAllFlights(@PathVariable Integer flightId){
+	public ResponseEntity<Flights> getFlights(@PathVariable Integer flightId){
 		Flights flights = flightsService.getFlightById(flightId);
 		return new ResponseEntity<>(flights, HttpStatus.OK);
 
 		
 	}
 	
+	@ExceptionHandler(FlightCreationException.class)
+	@RequestMapping(value = "/flights/insert", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<List<Flights>> flightInsertion(@RequestBody Flights newFlights) {
+		List <Flights> updatedFlights = flightsService.addFlight(newFlights);
+		if (updatedFlights.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(updatedFlights, HttpStatus.OK);
+		}			
+	}
 }
