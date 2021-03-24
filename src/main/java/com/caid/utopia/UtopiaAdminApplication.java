@@ -11,10 +11,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAutoConfiguration
 @EnableSwagger2
 @PropertySource("classpath:application.properties")
-public class UtopiaadminApplication {
+public class UtopiaAdminApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UtopiaadminApplication.class, args);
+		SpringApplication.run(UtopiaAdminApplication.class, args);
 	}
 
 }

@@ -9,9 +9,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = UtopiaadminApplication.class)
+@SpringBootTest(classes = UtopiaAdminApplication.class)
 @WebAppConfiguration
-class UtopiaadminApplicationTests {
+class UtopiaAdminApplicationTests {
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
