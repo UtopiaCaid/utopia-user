@@ -16,6 +16,7 @@ import com.caid.utopia.repo.FlightsRepo;
 import exception.FlightByIdException;
 import exception.FlightCreationException;
 import exception.RecordNotFoundException;
+import exception.FlightDeletionException;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 
 
@@ -54,6 +55,15 @@ public class FlightsService {
 			 return FlightsRepo.findAll();
 		} catch (Exception e) {
 			throw new FlightCreationException();
+		}
+	}
+	
+	public List<Flights> deleteFlight(Flights flights) throws FlightDeletionException {
+		try {
+			FlightsRepo.delete(flights);
+			return FlightsRepo.findAll();
+		} catch (Exception e) {
+			throw new FlightDeletionException();
 		}
 	}
 	

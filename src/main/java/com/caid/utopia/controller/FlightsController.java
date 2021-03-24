@@ -21,6 +21,7 @@ import com.caid.utopia.service.FlightsService;
 
 import exception.FlightByIdException;
 import exception.FlightCreationException;
+import exception.FlightDeletionException;
 import exception.RecordNotFoundException;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 
@@ -64,5 +65,16 @@ public class FlightsController {
 		} else {
 			return new ResponseEntity<>(updatedFlights, HttpStatus.OK);
 		}			
+	}
+	
+	@ExceptionHandler(FlightDeletionException.class)
+	@RequestMapping(value = "/flights/delete", method = RequestMethod.DELETE, consumes = "application/json")
+	public ResponseEntity<List<Flights>> flightDeletion(@RequestBody Flights flights) {
+		List <Flights> updatedFlights = flightsService.deleteFlight(flights);
+		if (updatedFlights.contains(flights.getFlightNo())){
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		} else {
+			return new ResponseEntity<>(updatedFlights, HttpStatus.OK);
+		}
 	}
 }
