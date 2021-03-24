@@ -45,7 +45,7 @@ public class Airports implements Serializable {
 	@NonNull
 	private String city;
 	
-	@Column(name = "airportName", length = 45)
+	@Column(name = "airport_name", length = 45)
 	@NonNull
 	private String airportName;
 	
@@ -54,11 +54,11 @@ public class Airports implements Serializable {
 	private String status;
 
 	@OneToMany(mappedBy = "airportIdArrival", fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonBackReference(value = "departure")
 	private List<Flights> arrivalFlights;
 
 	@OneToMany(mappedBy = "airportIdDeparture", fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonBackReference(value = "arrival")
 	private List<Flights> departureFlights;
 
 	public Integer getAirportId() {

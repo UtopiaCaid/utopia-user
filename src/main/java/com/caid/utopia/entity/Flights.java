@@ -48,11 +48,11 @@ public class Flights implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "airport_id_dep")
-	private AircraftType airportIdDeparture;
+	private Airports airportIdDeparture;
 	
 	@ManyToOne
 	@JoinColumn(name = "airport_id_arr")
-	private AircraftType airportIdArrival;
+	private Airports airportIdArrival;
 	
 	@ManyToOne
 	@JoinColumn(name = "aircraft_id")
@@ -63,7 +63,7 @@ public class Flights implements Serializable {
 	private List<Tickets> tickets;
 	
 
-	@Column(name = "basePrice")
+	@Column(name = "base_price")
 	@NonNull
 	private float basePrice;
 	
@@ -103,19 +103,19 @@ public class Flights implements Serializable {
 		this.flightGate = flightGate;
 	}
 
-	public AircraftType getAirportIdDeparture() {
+	public Airports getAirportIdDeparture() {
 		return airportIdDeparture;
 	}
 
-	public void setAirportIdDeparture(AircraftType airportIdDeparture) {
+	public void setAirportIdDeparture(Airports airportIdDeparture) {
 		this.airportIdDeparture = airportIdDeparture;
 	}
 
-	public AircraftType getAirportIdArrival() {
+	public Airports getAirportIdArrival() {
 		return airportIdArrival;
 	}
 
-	public void setAirportIdArrival(AircraftType airportIdArrival) {
+	public void setAirportIdArrival(Airports airportIdArrival) {
 		this.airportIdArrival = airportIdArrival;
 	}
 
