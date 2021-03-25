@@ -13,7 +13,11 @@ import com.caid.utopia.repo.AircraftRepo;
 import com.caid.utopia.repo.AircraftTypeRepo;
 import com.caid.utopia.repo.FlightsRepo;
 
-	import exception.RecordNotFoundException;
+import exception.RecordAlreadyExistsException;
+import exception.RecordCreationException;
+import exception.RecordForeignKeyConstraintException;
+import exception.RecordNotFoundException;
+import exception.RecordUpdateException;
 
 
 	@Service
@@ -31,6 +35,9 @@ import com.caid.utopia.repo.FlightsRepo;
 		@Autowired
 		AircraftTypeRepo aircraftTypeRepo;
 		
+		/* Create aircraft type */
+		//public Aircraft createAircraftType() throws 
+		
 		/* Read all aircraft */
 		public List<Aircraft> getAllAircraft() throws RecordNotFoundException {
 			
@@ -42,7 +49,7 @@ import com.caid.utopia.repo.FlightsRepo;
 			}		
 		}
 		
-		/* read aircraft by id */
+		/* Read aircraft by id */
 		public Aircraft getAircraftById(Integer id) throws RecordNotFoundException {
 			try {
 				Optional<Aircraft> aircraft = aircraftRepo.findById(id);
@@ -66,7 +73,7 @@ import com.caid.utopia.repo.FlightsRepo;
 				throw new RecordNotFoundException();
 			}		
 		}
-		/* read aircraft type by id */
+		/* Read aircraft type by id */
 		public AircraftType getAircraftTypeById(Integer id) throws RecordNotFoundException {
 			try {
 				Optional<AircraftType> aircraftType = aircraftTypeRepo.findById(id);
@@ -79,5 +86,132 @@ import com.caid.utopia.repo.FlightsRepo;
 				throw new RecordNotFoundException();
 			}
 		}
+		/* Create Aircraft */
+		public Aircraft createAircraft(Aircraft aircraft) throws RecordCreationException {
+			try {
+				/* Check field values */
+				AircraftType aircraftType = aircraft.getAircraftType();
+				Integer seat_count = aircraft.getSeatCount();
+				Integer first_class = aircraft.getFirstClassCount();
+				Integer second_class = aircraft.getSecondClassCount();
+				Integer third_class = aircraft.getThirdClassCount();
+				if(!aircraftTypeRepo.findById(aircraftType.getAircraftTypeId()).isPresent()) {
+					throw new RecordForeignKeyConstraintException();
+				}
+				if(first_class < 0 || second_class < 0 || third_class < 0 
+						|| first_class + second_class + third_class > seat_count) {
+					throw new RecordCreationException();
+				}
+				return aircraftRepo.save(aircraft);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
 		
+		/* Create AircraftType */
+		public AircraftType createAircraftType(AircraftType aircraftType) throws RecordCreationException {
+			try {
+				if(aircraftTypeRepo.findById(aircraftType.getAircraftTypeId()).isPresent()) {
+					throw new RecordAlreadyExistsException();
+				}
+				
+				/* Check all field types before api call */
+				String name = aircraftType.getaircraftTypeName();
+				Integer seats = aircraftType.getSeatMaximum();
+				String manufacturer = aircraftType.getManufacturer();
+				if(name == null || name.length() < 1 || name.length() > 45) {
+					throw new RecordCreationException();
+				}
+				if(seats == null || seats < 0) {
+					throw new RecordCreationException();
+				}
+				if(manufacturer == null || manufacturer.length() < 1 || manufacturer.length() > 45) {
+					throw new RecordCreationException();
+				}
+				return aircraftTypeRepo.save(aircraftType);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Update Aircraft */
+		public Aircraft updateAircraft(Aircraft aircraft) throws RecordUpdateException {
+			try {
+				Optional<AircraftType> aircraftType = aircraftTypeRepo.findById(aircraft.getAircraftType().getAircraftTypeId());
+				if(aircraftRepo.findById(aircraft.getAircraftId()).isEmpty()) {
+					throw new RecordUpdateException();
+				}
+				if(aircraftType.isEmpty()) {
+					throw new RecordForeignKeyConstraintException();
+				}
+				if(!aircraftType.get().getAircraftTypeId().equals(aircraft.getAircraftType().getAircraftTypeId())) {
+					throw new RecordUpdateException();
+				}
+				Integer seat_count = aircraft.getSeatCount();
+				Integer first_class = aircraft.getFirstClassCount();
+				Integer second_class = aircraft.getSecondClassCount();
+				Integer third_class = aircraft.getThirdClassCount();
+				String status = aircraft.getAircraftStatus();
+				if(first_class < 0 || second_class < 0 || third_class < 0 
+						|| first_class + second_class + third_class > seat_count
+						|| status.length() > 45) 
+				{
+					throw new RecordCreationException();
+				}
+				return aircraftRepo.save(aircraft);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Update Aircraft Type*/
+		public AircraftType updateAircraftType(AircraftType aircraftType) throws RecordUpdateException {
+			try {
+				Optional<AircraftType> temp = aircraftTypeRepo.findById(aircraftType.getAircraftTypeId());
+				if(temp.isEmpty()) {
+					throw new RecordUpdateException();
+				}
+				String name = aircraftType.getaircraftTypeName();
+				Integer seat_maximum = aircraftType.getSeatMaximum();
+				String manufacturer = aircraftType.getManufacturer();
+				if(name == null || seat_maximum == null || manufacturer == null
+						|| seat_maximum < 0 || name.length() <= 0 || name.length() > 45
+						|| manufacturer.length() <= 0 || manufacturer.length() > 45) 
+				{
+					throw new RecordCreationException();	
+				}
+				return aircraftTypeRepo.save(aircraftType);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		
+		
+		/* Deactivate Aircraft */
+		public Aircraft deactivateAircraft(Aircraft aircraft) throws RecordUpdateException {
+			try {
+				Optional<Aircraft> temp = aircraftRepo.findById(aircraft.getAircraftId());
+				if(temp.isEmpty()) {
+					throw new RecordUpdateException();
+				}
+				aircraft.setAircraftStatus("Inactive");
+				return aircraftRepo.save(aircraft);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Activate Aircraft */
+		public Aircraft activateAircraft(Aircraft aircraft) throws RecordUpdateException {
+			try {
+				Optional<Aircraft> temp = aircraftRepo.findById(aircraft.getAircraftId());
+				if(temp.isEmpty()) {
+					throw new RecordUpdateException();
+				}
+				aircraft.setAircraftStatus("Active");
+				return aircraftRepo.save(aircraft);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
 	}
