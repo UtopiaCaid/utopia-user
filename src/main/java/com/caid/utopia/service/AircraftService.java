@@ -194,6 +194,7 @@ import exception.RecordUpdateException;
 				if(temp.isEmpty()) {
 					throw new RecordUpdateException();
 				}
+				aircraft = temp.get();
 				aircraft.setAircraftStatus("Inactive");
 				return aircraftRepo.save(aircraft);
 			}catch(Exception e) {
@@ -205,9 +206,10 @@ import exception.RecordUpdateException;
 		public Aircraft activateAircraft(Aircraft aircraft) throws RecordUpdateException {
 			try {
 				Optional<Aircraft> temp = aircraftRepo.findById(aircraft.getAircraftId());
-				if(temp.isEmpty()) {
+				if(temp == null) {
 					throw new RecordUpdateException();
 				}
+				aircraft = temp.get();
 				aircraft.setAircraftStatus("Active");
 				return aircraftRepo.save(aircraft);
 			}catch(Exception e) {
