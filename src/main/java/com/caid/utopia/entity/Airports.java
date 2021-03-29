@@ -54,12 +54,12 @@ public class Airports implements Serializable {
 	private String status;
 
 	@OneToMany(mappedBy = "airportArrival", fetch = FetchType.LAZY)
-	@JsonBackReference
-	private List<Flights> arrivalFlights;
+	@JsonBackReference(value = "arrival")
+	private List<Flight> arrivalFlights;
 
 	@OneToMany(mappedBy = "airportDeparture", fetch = FetchType.LAZY)
-	@JsonBackReference
-	private List<Flights> departureFlights;
+	@JsonBackReference(value = "departure")
+	private List<Flight> departureFlights;
 
 	public Integer getAirportId() {
 		return airportId;
@@ -101,19 +101,19 @@ public class Airports implements Serializable {
 		this.status = status;
 	}
 
-	public List<Flights> getArrivalFlights() {
+	public List<Flight> getArrivalFlights() {
 		return arrivalFlights;
 	}
 
-	public void setArrivalFlights(List<Flights> arrivalFlights) {
+	public void setArrivalFlights(List<Flight> arrivalFlights) {
 		this.arrivalFlights = arrivalFlights;
 	}
 
-	public List<Flights> getDepartureFlights() {
+	public List<Flight> getDepartureFlights() {
 		return departureFlights;
 	}
 
-	public void setDepartureFlights(List<Flights> departureFlights) {
+	public void setDepartureFlights(List<Flight> departureFlights) {
 		this.departureFlights = departureFlights;
 	}
 

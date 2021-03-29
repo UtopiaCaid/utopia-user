@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
-import com.caid.utopia.entity.Flights;
+import com.caid.utopia.entity.Flight;
 import com.caid.utopia.service.FlightsService;
 
 import exception.RecordNotFoundException;
@@ -66,8 +66,8 @@ public class FlightsController {
 	}
 	
 	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Flights>> getAllFlights(){
-		List<Flights> flights = flightsService.getAllFlights();
+	public ResponseEntity<List<Flight>> getAllFlights(){
+		List<Flight> flights = flightsService.getAllFlights();
 		if (flights.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}else {
@@ -77,8 +77,8 @@ public class FlightsController {
 	}
 	
 	@RequestMapping(value = "/flights/{flightId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Flights> getAllFlights(@PathVariable Integer flightId){
-		Flights flights = flightsService.getFlightById(flightId);
+	public ResponseEntity<Flight> getAllFlights(@PathVariable Integer flightId){
+		Flight flights = flightsService.getFlightById(flightId);
 		return new ResponseEntity<>(flights, HttpStatus.OK);
 
 		

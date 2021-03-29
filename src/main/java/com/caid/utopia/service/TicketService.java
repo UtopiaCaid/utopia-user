@@ -1,24 +1,19 @@
-	package com.caid.utopia.service;
+package com.caid.utopia.service;
 
-	import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
-	import java.util.Optional;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.caid.utopia.entity.Ticket;
+import com.caid.utopia.entity.Traveler;
+import com.caid.utopia.entity.Flight;
+import com.caid.utopia.entity.Payment;
+import com.caid.utopia.repo.TicketRepo;
+import com.caid.utopia.repo.TravelerRepo;
+import com.caid.utopia.repo.FlightRepo;
+import com.caid.utopia.repo.PaymentRepo;
 
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
-
-import com.caid.utopia.entity.Tickets;
-import com.caid.utopia.entity.Travelers;
-import com.caid.utopia.entity.Tickets;
-import com.caid.utopia.entity.Flights;
-import com.caid.utopia.entity.Payments;
-import com.caid.utopia.repo.TicketsRepo;
-import com.caid.utopia.repo.TravelersRepo;
-import com.caid.utopia.repo.TicketsRepo;
-import com.caid.utopia.repo.FlightsRepo;
-import com.caid.utopia.repo.PaymentsRepo;
-
-import exception.RecordAlreadyExistsException;
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
 import exception.RecordNotFoundException;
@@ -29,36 +24,32 @@ import exception.RecordUpdateException;
 	public class TicketService {
 		
 		@Autowired
-		FlightsRepo flightsRepo;
+		FlightRepo flightsRepo;
 		
 		@Autowired
-		TicketsRepo ticketRepo;
+		TicketRepo ticketRepo;
 		
 		@Autowired
-		TravelersRepo travelersRepo;
+		TravelerRepo travelerRepo;
 		
 		@Autowired
-		PaymentsRepo paymentsRepo;
+		PaymentRepo paymentRepo;
 				
 		/* Create Tickets */
-		public Tickets createTickets(Tickets ticket) throws RecordCreationException {
+		public Ticket createTicket(Ticket ticket) throws RecordCreationException {
 			try {
 				/* Check field values */
-				Flights flight = ticket.getFlight();
-				Travelers traveler = ticket.getTraveler();
+				Flight flight = flightsRepo.findById(ticket.getFlight().getFlightNo()).get();
+				Traveler traveler = travelerRepo.findById(ticket.getTraveler().getTravelerId()).get();
+				Payment payment = paymentRepo.findById(ticket.getPayment().getPaymentId()).get();
+				if(flight == null || traveler == null || payment == null) {
+					throw new RecordForeignKeyConstraintException();
+				}
 				Integer confirmationCode = ticket.getConfirmationCode();
 				Float ticketPrice = ticket.getTicketPrice();
-				LocalDate dateIssued = ticket.getDateIssued();
-				Payments payment = ticket.getPayment();
-				if(!travelersRepo.findById(traveler.getTravelerId()).isPresent()) {
-					throw new RecordForeignKeyConstraintException();
-				}
-				if(!paymentsRepo.findById(payment.getPaymentId()).isPresent()) {
-					throw new RecordForeignKeyConstraintException();
-				}
+				ticket.setDateIssued(LocalDate.now());
 				if(confirmationCode == null || confirmationCode < 0 
-						|| ticketPrice == null || ticketPrice < 0
-						|| dateIssued == null || dateIssued.compareTo(LocalDate.now()) > 0) {
+						|| ticketPrice == null || ticketPrice < 0) {
 					throw new RecordCreationException();
 				}
 				return ticketRepo.save(ticket);
@@ -67,20 +58,19 @@ import exception.RecordUpdateException;
 			}
 		}		
 		/* Read all ticket */
-		public List<Tickets> getAllTickets() throws RecordNotFoundException {
-			
+		public List<Ticket> getAllTickets() throws RecordNotFoundException {
 			try {
-				List<Tickets> ticket = ticketRepo.findAll();
-				return ticket;
+				List<Ticket> tickets = ticketRepo.findAll();
+				return tickets;
 			} catch (Exception e) {
 				throw new RecordNotFoundException();
 			}		
 		}
 		
 		/* Read ticket by id */
-		public Tickets getTicketsById(Integer id) throws RecordNotFoundException {
+		public Ticket getTicketsById(Integer id) throws RecordNotFoundException {
 			try {
-				Optional<Tickets> ticket = ticketRepo.findById(id);
+				Optional<Ticket> ticket = ticketRepo.findById(id);
 				if(ticket.isPresent()) {
 					return ticket.get();
 				} else {
@@ -93,12 +83,12 @@ import exception.RecordUpdateException;
 		
 		
 		/* Update Tickets */
-		public Tickets updateTickets(Tickets ticket) throws RecordUpdateException {
+		public Ticket updateTicket(Ticket ticket) throws RecordUpdateException {
 			try {
 				if(ticketRepo.findById(ticket.getTicketNo()).isEmpty()) {
 					throw new RecordUpdateException();
 				}
-				Tickets temp = ticketRepo.findById(ticket.getTicketNo()).get();
+				Ticket temp = ticketRepo.findById(ticket.getTicketNo()).get();
 				float price = ticket.getTicketPrice();
 				if(price >= 0) {
 					temp.setTicketPrice(price); 
@@ -107,33 +97,44 @@ import exception.RecordUpdateException;
 				if(confirmationCode != null && confirmationCode >= 0) {
 					temp.setConfirmationCode(confirmationCode);
 				}
-				Flights flight = ticket.getFlight();
+				Flight flight = ticket.getFlight();
 				if(flightsRepo.findById(flight.getFlightNo()).isPresent()) {
-					temp.setFlight(flight);
+					temp.setFlight(flightsRepo.findById(flight.getFlightNo()).get());
 				}
-				Travelers traveler = ticket.getTraveler();
-				if(travelersRepo.findById(traveler.getTravelerId()).isPresent()) {
-					temp.setTraveler(traveler);
+				Traveler traveler = ticket.getTraveler();
+				if(travelerRepo.findById(traveler.getTravelerId()).isPresent()) {
+					temp.setTraveler(travelerRepo.findById(traveler.getTravelerId()).get());
 				}
-				Payments payment = ticket.getPayment();
-				if(paymentsRepo.findById(payment.getPaymentId()).isPresent()) {
-					temp.setPayment(payment);
+				Payment payment = ticket.getPayment();
+				if(paymentRepo.findById(payment.getPaymentId()).isPresent()) {
+					temp.setPayment(paymentRepo.findById(payment.getPaymentId()).get());
 				}
 				LocalDate dateIssued = ticket.getDateIssued();
-				if(dateIssued.isBefore(LocalDate.now())) {
+				if(dateIssued != null && dateIssued.isBefore(LocalDate.now())) {
 					temp.setDateIssued(dateIssued);
 				}
-				return ticketRepo.save(ticket);
+				return ticketRepo.save(temp);
 			}catch(Exception e) {
 				throw e;
 			}
 		}
 		
+		/* Change flight if necessary */
+		public Ticket changeFlight(Ticket ticket) throws RecordUpdateException{
+			Ticket newTicket = ticketRepo.findById(ticket.getTicketNo()).get();
+			Flight temp = flightsRepo.findById(ticket.getFlight().getFlightNo()).get();
+			if(temp == null || temp.getFlightNo() == null) {
+				throw new RecordUpdateException();
+			} else {
+				newTicket.setFlight(temp);
+				return ticketRepo.save(newTicket);
+			}
+		}
 		
 		/* Delete Ticket */
-		public void deleteTickets(Tickets ticket) throws RecordUpdateException {
+		public void deleteTicket(Ticket ticket) throws RecordUpdateException {
 			try {
-				Optional<Tickets> temp = ticketRepo.findById(ticket.getTicketNo());
+				Optional<Ticket> temp = ticketRepo.findById(ticket.getTicketNo());
 				if(temp.isEmpty()) {
 					throw new RecordNotFoundException();
 				}

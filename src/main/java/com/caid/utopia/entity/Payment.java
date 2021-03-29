@@ -24,7 +24,7 @@ import org.springframework.lang.NonNull;
  */
 @Entity
 @Table(name = "tbl_payments")
-public class Payments implements Serializable {
+public class Payment implements Serializable {
 
 
 
@@ -40,7 +40,7 @@ public class Payments implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "account_number")
-	private Accounts accounts;
+	private Account accounts;
 
 	@Column(name = "date_processed")
 	@NonNull
@@ -62,11 +62,11 @@ public class Payments implements Serializable {
 		this.dateProcessed = dateProcessed;
 	}
 	
-	public Accounts getAccounts() {
+	public Account getAccounts() {
 		return accounts;
 	}
 
-	public void setAccounts(Accounts accounts) {
+	public void setAccounts(Account accounts) {
 		this.accounts = accounts;
 	}
 	

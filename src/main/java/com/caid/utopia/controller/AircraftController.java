@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -37,11 +36,11 @@ public class AircraftController {
 	FlightsService flightsService;
 	
 	@ExceptionHandler({
-		RecordNotFoundException.class,
-		RecordCreationException.class,
-		RecordForeignKeyConstraintException.class,
-		RecordAlreadyExistsException.class,
-		RecordUpdateException.class,
+		RecordNotFoundException.class, //404
+		RecordCreationException.class, //404
+		RecordForeignKeyConstraintException.class, //409
+		RecordAlreadyExistsException.class, //409
+		RecordUpdateException.class, //400
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {

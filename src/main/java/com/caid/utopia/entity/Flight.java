@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  */
 @Entity
 @Table(name = "tbl_flights")
-public class Flights implements Serializable {
+public class Flight implements Serializable {
 
 
 	/**
@@ -60,7 +60,7 @@ public class Flights implements Serializable {
 	
 	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY)
 	@JsonBackReference
-	private List<Tickets> tickets;
+	private List<Ticket> tickets;
 	
 
 	@Column(name = "base_price")

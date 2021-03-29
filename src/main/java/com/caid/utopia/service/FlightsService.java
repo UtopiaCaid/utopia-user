@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.caid.utopia.entity.Flights;
-import com.caid.utopia.repo.FlightsRepo;
+import com.caid.utopia.entity.Flight;
+import com.caid.utopia.repo.FlightRepo;
 
 import exception.RecordNotFoundException;
 
@@ -16,21 +16,21 @@ import exception.RecordNotFoundException;
 public class FlightsService {
 	
 	@Autowired
-	FlightsRepo FlightsRepo;
+	FlightRepo FlightsRepo;
 	
-	public List<Flights> getAllFlights() throws RecordNotFoundException {
+	public List<Flight> getAllFlights() throws RecordNotFoundException {
 		
 		try {
-			List<Flights> flights = FlightsRepo.findAll();
+			List<Flight> flights = FlightsRepo.findAll();
 			return flights;
 		} catch (Exception e) {
 			throw new RecordNotFoundException();
 		}		
 	}
 	
-	public Flights getFlightById(Integer id) throws RecordNotFoundException {
+	public Flight getFlightById(Integer id) throws RecordNotFoundException {
 		try {
-			Optional<Flights> possibleFlight = FlightsRepo.findById(id);
+			Optional<Flight> possibleFlight = FlightsRepo.findById(id);
 			if(possibleFlight.isPresent()) {
 				return possibleFlight.get();
 			} else {
