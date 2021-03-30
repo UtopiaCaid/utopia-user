@@ -65,11 +65,11 @@ public class Account implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public AccountRole getRoleId() {
+	public AccountRole getRole() {
 		return role;
 	}
 
-	public void setRoleId(AccountRole role) {
+	public void setRole(AccountRole role) {
 		this.role = role;
 	}
 

@@ -13,7 +13,7 @@ import exception.RecordNotFoundException;
 
 
 @Service
-public class FlightsService {
+public class FlightService {
 	
 	@Autowired
 	FlightRepo FlightsRepo;

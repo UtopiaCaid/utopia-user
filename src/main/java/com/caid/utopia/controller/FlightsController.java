@@ -20,7 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
-import com.caid.utopia.service.FlightsService;
+import com.caid.utopia.service.FlightService;
 
 import exception.RecordNotFoundException;
 
@@ -31,7 +31,7 @@ public class FlightsController {
 	public static final String PAGE_NOT_FOUND_LOG_CATEGORY = "org.springframework.web.servlet.PageNotFound";
 
 	@Autowired
-	FlightsService flightsService;
+	FlightService flightsService;
 	
 	@ExceptionHandler(
 			RecordNotFoundException.class

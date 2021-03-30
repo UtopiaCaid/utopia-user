@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.service.AircraftService;
-import com.caid.utopia.service.FlightsService;
+import com.caid.utopia.service.FlightService;
 
 import exception.RecordNotFoundException;
 import exception.RecordCreationException;
@@ -33,7 +33,7 @@ public class AircraftController {
 	
 
 	@Autowired
-	FlightsService flightsService;
+	FlightService flightsService;
 	
 	@ExceptionHandler({
 		RecordNotFoundException.class, //404
