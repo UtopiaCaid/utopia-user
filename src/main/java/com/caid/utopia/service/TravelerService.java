@@ -37,29 +37,41 @@ import exception.RecordUpdateException;
 		public Traveler createTraveler(Traveler traveler) throws RecordCreationException {
 			try {
 				/* Check field values */
-				Account account = traveler.getAccount();
-				if(!(accountRepo.findById(account.getAccountNumber())).isPresent()) {
+				System.out.println(traveler.getAccount().getAccountNumber());
+				Traveler temp = new Traveler();
+				Account account = accountRepo.findById(traveler.getAccount().getAccountNumber()).get();
+				if(account == null) {
 					throw new RecordForeignKeyConstraintException();
 				}
+				temp.setAccount(account);
 				String firstName = traveler.getFirstName();
 				String middleName = traveler.getMiddleName();
-				if(middleName.length() <= 0 || middleName.length() > 45) {
+				if(firstName == null || firstName.length() <= 0 || firstName.length() > 45) {
 					throw new RecordCreationException();
+				}
+				temp.setFirstName(firstName);
+				if(middleName != null 
+						&& middleName.length() > 0  && firstName.length() <= 45) {
+					temp.setMiddleName(middleName);
 				}
 				String lastName = traveler.getLastName();
-				String gender = traveler.getGender();
-				String ktn = traveler.getKnownTravelerNumber();
-				if(ktn.length() <= 0 || ktn.length() > 45) {
+				if(lastName == null || lastName.length() <= 0 || lastName.length() > 45) {
 					throw new RecordCreationException();
 				}
+				temp.setLastName(lastName);
+				String gender = traveler.getGender();
+				String ktn = traveler.getKnownTravelerNumber();
+				if(ktn != null && ktn.length() > 0  && ktn.length() <= 45) {
+					temp.setKnownTravelerNumber(ktn);
+				}
 				LocalDate dob = traveler.getDob();
-				if(firstName == null || firstName.length() <= 0 || firstName.length() > 45 
-						|| lastName == null || lastName.length() <= 0 || lastName.length() > 45 
-						|| gender == null || gender.length() != 1
+				if(gender == null || gender.length() != 1
 						|| dob == null || dob.compareTo(LocalDate.now()) > 0) {
 					throw new RecordCreationException();
 				}
-				return travelerRepo.save(traveler);
+				temp.setGender(gender);
+				temp.setDob(dob);
+				return travelerRepo.save(temp);
 			}catch(Exception e) {
 				throw e;
 			}
@@ -102,30 +114,30 @@ import exception.RecordUpdateException;
 					temp.setAccount(account);
 				}
 				String firstName = traveler.getFirstName();
-				if(firstName.length() > 0 && firstName.length() <= 45) {
+				if(firstName != null && firstName.length() > 0 && firstName.length() <= 45) {
 					temp.setFirstName(firstName);
 				}
 				String middleName = traveler.getMiddleName();
-				if(middleName.length() > 0 && middleName.length() <= 45) {
-					temp.setFirstName(middleName);
+				if(middleName != null && middleName.length() > 0 && middleName.length() <= 45) {
+					temp.setMiddleName(middleName);
 				}
 				String lastName = traveler.getLastName();
-				if(lastName.length() > 0 && lastName.length() <= 45) {
-					temp.setFirstName(lastName);
+				if(lastName != null && lastName.length() > 0 && lastName.length() <= 45) {
+					temp.setLastName(lastName);
 				}
 				String gender = traveler.getGender();
-				if(gender.length() == 1) {
+				if(gender != null && gender.length() == 1) {
 					temp.setGender(gender);
 				}
 				String ktn = traveler.getKnownTravelerNumber();
-				if(ktn.length() > 0 && ktn.length() <= 45) {
-					temp.setFirstName(ktn);
+				if(ktn != null && ktn.length() > 0 && ktn.length() <= 45) {
+					temp.setKnownTravelerNumber(ktn);
 				}
 				LocalDate dob = traveler.getDob();
 				if(dob.isBefore(LocalDate.now())) {
 					temp.setDob(dob);
 				}
-				return travelerRepo.save(traveler);
+				return travelerRepo.save(temp);
 			}catch(Exception e) {
 				throw e;
 			}
