@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  */
 @Entity
 @Table(name = "tbl_airports")
-public class Airports implements Serializable {
+public class Airport implements Serializable {
 
 	/**
 	 * 
