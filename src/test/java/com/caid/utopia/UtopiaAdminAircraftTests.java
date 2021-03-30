@@ -52,7 +52,6 @@ public class UtopiaAdminAircraftTests extends UtopiaAdminApplicationTests {
 		status = mvcResult.getResponse().getStatus();
 		assertEquals(201, status);
 		aircraft = super.mapFromJson(mvcResult.getResponse().getContentAsString(), Aircraft.class);
-		System.out.println(aircraft.getAircraftId());
 		/* deactivate */
 		uri = "/Aircraft/Deactivate";
 		inputJson = super.mapToJson(aircraft);
