@@ -134,7 +134,7 @@ import exception.RecordUpdateException;
 					temp.setKnownTravelerNumber(ktn);
 				}
 				LocalDate dob = traveler.getDob();
-				if(dob.isBefore(LocalDate.now())) {
+				if(dob != null && dob.isBefore(LocalDate.now())) {
 					temp.setDob(dob);
 				}
 				return travelerRepo.save(temp);

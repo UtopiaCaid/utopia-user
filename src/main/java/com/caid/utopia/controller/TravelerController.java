@@ -102,5 +102,17 @@ public class TravelerController {
 			return handleException(e);
 		}
 	}
+	
+	/* delete record */
+	@Transactional
+	@RequestMapping(value = "/Traveler", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Object> deleteTraveler(@RequestBody Traveler traveler) throws Exception {
+		try {
+			travelerService.deleteTraveler(traveler);
+			return new ResponseEntity<>(traveler, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 		
 }
