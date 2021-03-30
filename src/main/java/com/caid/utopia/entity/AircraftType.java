@@ -34,7 +34,6 @@ public class AircraftType implements Serializable {
 	private static final long serialVersionUID = -2321331676252257491L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "aircraft_type_id")
 	private Integer aircraftTypeId;
 
@@ -90,7 +89,54 @@ public class AircraftType implements Serializable {
 		return aircraft;
 	}
 
-	public void setAircraft(List<Aircraft> aircraft) {
-		this.aircraft = aircraft;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((aircraft == null) ? 0 : aircraft.hashCode());
+		result = prime * result + ((aircraftTypeId == null) ? 0 : aircraftTypeId.hashCode());
+		result = prime * result + ((aircraftTypeName == null) ? 0 : aircraftTypeName.hashCode());
+		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
+		result = prime * result + ((seatMaximum == null) ? 0 : seatMaximum.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AircraftType other = (AircraftType) obj;
+		if (aircraft == null) {
+			if (other.aircraft != null)
+				return false;
+		} else if (!aircraft.equals(other.aircraft))
+			return false;
+		if (aircraftTypeId == null) {
+			if (other.aircraftTypeId != null)
+				return false;
+		} else if (!aircraftTypeId.equals(other.aircraftTypeId))
+			return false;
+		if (aircraftTypeName == null) {
+			if (other.aircraftTypeName != null)
+				return false;
+		} else if (!aircraftTypeName.equals(other.aircraftTypeName))
+			return false;
+		if (manufacturer == null) {
+			if (other.manufacturer != null)
+				return false;
+		} else if (!manufacturer.equals(other.manufacturer))
+			return false;
+		if (seatMaximum == null) {
+			if (other.seatMaximum != null)
+				return false;
+		} else if (!seatMaximum.equals(other.seatMaximum))
+			return false;
+		return true;
+	}
+
+	
 }

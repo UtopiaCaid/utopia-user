@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.caid.utopia.entity.Flights;
-import com.caid.utopia.repo.FlightsRepo;
+import com.caid.utopia.entity.Flight;
+import com.caid.utopia.repo.FlightRepo;
 
 import exception.FlightByIdException;
 import exception.FlightCreationException;
@@ -21,24 +21,24 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 
 
 @Service
-public class FlightsService {
+public class FlightService {
 	
 	@Autowired
-	FlightsRepo FlightsRepo;
+	FlightRepo FlightRepo;
 	
-	public List<Flights> getAllFlights() throws RecordNotFoundException {
+	public List<Flight> getAllFlight() throws RecordNotFoundException {
 		
 		try {
-			List<Flights> flights = FlightsRepo.findAll();
+			List<Flight> flights = FlightRepo.findAll();
 			return flights;
 		} catch (Exception e) {
 			throw new RecordNotFoundException();
 		}		
 	}
 	
-	public Flights getFlightById(Integer id) throws FlightByIdException {
+	public Flight getFlightById(Integer id) throws FlightByIdException {
 		try {
-			Optional<Flights> possibleFlight = FlightsRepo.findById(id);
+			Optional<Flight> possibleFlight = FlightRepo.findById(id);
 			if(possibleFlight.isPresent()) {
 				return possibleFlight.get();
 			} else {
@@ -49,19 +49,19 @@ public class FlightsService {
 		}
 	}
 	
-	public List<Flights> addFlight(Flights flights) throws FlightCreationException {
+	public List<Flight> addFlight(Flight flights) throws FlightCreationException {
 		try {
-			 FlightsRepo.save(flights);
-			 return FlightsRepo.findAll();
+			 FlightRepo.save(flights);
+			 return FlightRepo.findAll();
 		} catch (Exception e) {
 			throw new FlightCreationException();
 		}
 	}
 	
-	public List<Flights> deleteFlight(Flights flights) throws FlightDeletionException {
+	public List<Flight> deleteFlight(Flight flights) throws FlightDeletionException {
 		try {
-			FlightsRepo.delete(flights);
-			return FlightsRepo.findAll();
+			FlightRepo.delete(flights);
+			return FlightRepo.findAll();
 		} catch (Exception e) {
 			throw new FlightDeletionException();
 		}

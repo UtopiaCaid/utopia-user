@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  */
 @Entity
 @Table(name = "tbl_flights")
-public class Flights implements Serializable {
+public class Flight implements Serializable {
 
 
 	/**
@@ -48,11 +48,11 @@ public class Flights implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "airport_id_dep")
-	private Airports airportIdDeparture;
+	private Airport airportDeparture;
 	
 	@ManyToOne
 	@JoinColumn(name = "airport_id_arr")
-	private Airports airportIdArrival;
+	private Airport airportArrival;
 	
 	@ManyToOne
 	@JoinColumn(name = "aircraft_id")
@@ -60,7 +60,7 @@ public class Flights implements Serializable {
 	
 	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY)
 	@JsonBackReference
-	private List<Tickets> tickets;
+	private List<Ticket> tickets;
 	
 
 	@Column(name = "base_price")
@@ -103,20 +103,20 @@ public class Flights implements Serializable {
 		this.flightGate = flightGate;
 	}
 
-	public Airports getAirportIdDeparture() {
-		return airportIdDeparture;
+	public Airport getairportDeparture() {
+		return airportDeparture;
 	}
 
-	public void setAirportIdDeparture(Airports airportIdDeparture) {
-		this.airportIdDeparture = airportIdDeparture;
+	public void setairportDeparture(Airport airportDeparture) {
+		this.airportDeparture = airportDeparture;
 	}
 
-	public Airports getAirportIdArrival() {
-		return airportIdArrival;
+	public Airport getairportArrival() {
+		return airportArrival;
 	}
 
-	public void setAirportIdArrival(Airports airportIdArrival) {
-		this.airportIdArrival = airportIdArrival;
+	public void setairportArrival(Airport airportArrival) {
+		this.airportArrival = airportArrival;
 	}
 
 
