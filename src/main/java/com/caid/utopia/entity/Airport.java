@@ -61,6 +61,7 @@ public class Airport implements Serializable {
 	@JsonBackReference(value = "departure")
 	private List<Flight> departureFlights;
 
+
 	public Integer getAirportId() {
 		return airportId;
 	}

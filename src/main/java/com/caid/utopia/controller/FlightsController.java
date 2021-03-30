@@ -1,6 +1,7 @@
 package com.caid.utopia.controller;
 
 import java.util.List;
+
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -13,6 +14,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +24,13 @@ import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.service.FlightService;
+import com.caid.utopia.service.FlightsService;
 
+import exception.FlightByIdException;
+import exception.FlightCreationException;
+import exception.FlightDeletionException;
 import exception.RecordNotFoundException;
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -31,7 +39,7 @@ public class FlightsController {
 	public static final String PAGE_NOT_FOUND_LOG_CATEGORY = "org.springframework.web.servlet.PageNotFound";
 
 	@Autowired
-	FlightService flightsService;
+	FlightService flightService;
 	
 	@ExceptionHandler(
 			RecordNotFoundException.class
@@ -65,9 +73,10 @@ public class FlightsController {
 		return new ResponseEntity<>(body, headers, status);
 	}
 	
+	@ExceptionHandler(RecordNotFoundException.class)
 	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Flight>> getAllFlights(){
-		List<Flight> flights = flightsService.getAllFlights();
+	public ResponseEntity<List<Flight>> getAllFlight(){
+		List<Flight> flights = flightService.getAllFlight();
 		if (flights.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}else {
@@ -76,12 +85,35 @@ public class FlightsController {
 		
 	}
 	
+
+	@ExceptionHandler(FlightByIdException.class)
 	@RequestMapping(value = "/flights/{flightId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Flight> getAllFlights(@PathVariable Integer flightId){
-		Flight flights = flightsService.getFlightById(flightId);
+	public ResponseEntity<Flight> getFlight(@PathVariable Integer flightId){
+		Flight flights = flightService.getFlightById(flightId);
 		return new ResponseEntity<>(flights, HttpStatus.OK);
 
 		
 	}
 	
+	@ExceptionHandler(FlightCreationException.class)
+	@RequestMapping(value = "/flights/insert", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<List<Flight>> flightInsertion(@RequestBody Flight newFlight) {
+		List <Flight> updatedFlight = flightService.addFlight(newFlight);
+		if (updatedFlight.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
+		}			
+	}
+	
+	@ExceptionHandler(FlightDeletionException.class)
+	@RequestMapping(value = "/flights/delete", method = RequestMethod.DELETE, consumes = "application/json")
+	public ResponseEntity<List<Flight>> flightDeletion(@RequestBody Flight flights) {
+		List <Flight> updatedFlight = flightService.deleteFlight(flights);
+		if (updatedFlight.contains(flights.getFlightNo())){
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		} else {
+			return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
+		}
+	}
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(
 			value = HttpStatus.NOT_FOUND,
 			reason = "Could not find requested records"
-		)
+)
 
 public class RecordNotFoundException extends RuntimeException{
 
