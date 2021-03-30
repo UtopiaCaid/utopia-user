@@ -24,7 +24,6 @@ import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.service.FlightService;
-import com.caid.utopia.service.FlightsService;
 
 import exception.FlightByIdException;
 import exception.FlightCreationException;
