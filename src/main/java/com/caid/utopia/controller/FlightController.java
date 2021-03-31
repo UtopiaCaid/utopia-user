@@ -2,10 +2,6 @@ package com.caid.utopia.controller;
 
 import java.util.List;
 
-import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,7 +10,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,35 +29,14 @@ import exception.RecordNotFoundException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-public class FlightsController {
+public class FlightController {
 	
 	public static final String PAGE_NOT_FOUND_LOG_CATEGORY = "org.springframework.web.servlet.PageNotFound";
 
 	@Autowired
 	FlightService flightService;
 	
-	@ExceptionHandler(
-			RecordNotFoundException.class
-	)
-	@Nullable
-	public final ResponseEntity<Object> handleException(Exception ex, WebRequest request) throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		if (ex instanceof RecordNotFoundException) {
-			HttpStatus status = HttpStatus.FOUND;
-			return handleHttpRequestRecordNotFound(
-					(RecordNotFoundException) ex, headers, status, request);
-		}
-		throw ex;
-	}
 	
-	protected static final Log pageNotFoundLogger = LogFactory.getLog(PAGE_NOT_FOUND_LOG_CATEGORY);
-
-	protected ResponseEntity<Object> handleHttpRequestRecordNotFound(
-			RecordNotFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-		pageNotFoundLogger.warn(ex.getMessage());
-		return handleExceptionInternal(ex, null, headers, status, request);
-	}		
 
 	protected ResponseEntity<Object> handleExceptionInternal(
 			Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -95,22 +69,22 @@ public class FlightsController {
 	
 	@ExceptionHandler(FlightCreationException.class)
 	@RequestMapping(value = "/flights", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Flights> flightInsertion(@RequestBody Flights newFlights) {
-		Flights updatedFlights = flightsService.addFlight(newFlights);
+	public ResponseEntity<Flight> flightInsertion(@RequestBody Flight newFlight) {
+		Flight updatedFlights = flightService.addFlight(newFlight);
 		if (updatedFlights.getFlightNo() == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<>(newFlights, HttpStatus.OK);
+			return new ResponseEntity<>(newFlight, HttpStatus.OK);
 		}			
 	}
 	
 	@ExceptionHandler(FlightDeletionException.class)
 	@RequestMapping(value = "/flights", method = RequestMethod.DELETE, consumes = "application/json")
-	public ResponseEntity<Flights> flightDeletion(@RequestBody Flights flights) {
+	public ResponseEntity<Flight> flightDeletion(@RequestBody Flight flights) {
 		if(flights.getFlightNo() == null) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
-		List <Flights> updatedFlights = flightsService.deleteFlight(flights);
+		List <Flight> updatedFlights = flightService.deleteFlight(flights);
 		if (updatedFlights.contains(flights.getFlightNo())){
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		} else {
@@ -120,12 +94,12 @@ public class FlightsController {
 	
 	@ExceptionHandler(FlightDetailsException.class)
 	@RequestMapping(value = "/flights", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<List<Flights>> flightDetailsUpdate(@RequestBody Flights flights) {
-		List <Flights> updatedFlights = flightsService.updateFlight(flights);
+	public ResponseEntity<Flight> flightDetailsUpdate(@RequestBody Flight flight) {
+		List <Flight> updatedFlights = flightService.updateFlight(flight);
 		if(updatedFlights.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		} else {
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(flight, HttpStatus.OK);
 		}
 	}
 }
