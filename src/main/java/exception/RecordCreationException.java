@@ -5,14 +5,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
 			value = HttpStatus.NOT_FOUND,
-			reason = "Could not find requested records"
-)
+			reason = "Could not created requested record"
+		)
 
-public class RecordNotFoundException extends RuntimeException{
+public class RecordCreationException extends RuntimeException{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7463132903894299287L;
+	private static final long serialVersionUID = -1254562355546506759L;
+
+
 	
 }

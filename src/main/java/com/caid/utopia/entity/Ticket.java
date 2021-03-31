@@ -20,8 +20,8 @@ import org.springframework.lang.NonNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "tbl_ticket")
-public class Tickets implements Serializable {
+@Table(name = "tbl_tickets")
+public class Ticket implements Serializable {
 	/**
 	 * 
 	 */
@@ -33,20 +33,16 @@ public class Tickets implements Serializable {
 	private Integer ticketNo;
 
 	@ManyToOne
-	@JoinColumn(name = "account_number")
-	private Accounts account;
-
-	@ManyToOne
 	@JoinColumn(name = "flight_no")
-	private Flights flight;
+	private Flight flight;
 	
 	@ManyToOne
 	@JoinColumn(name = "traveler_id")
-	private Travelers traveler;
+	private Traveler traveler;
 	
 	@ManyToOne
 	@JoinColumn(name = "payment_id")
-	private Payments payment;
+	private Payment payment;
 	
 	@Column(name = "confirmation_code")
 	@NonNull
@@ -69,35 +65,27 @@ public class Tickets implements Serializable {
 	}
 
 
-	public Flights getFlight() {
+	public Flight getFlight() {
 		return flight;
 	}
 
-	public void setFlight(Flights flight) {
+	public void setFlight(Flight flight) {
 		this.flight = flight;
 	}
 
-	public Travelers getTraveler() {
+	public Traveler getTraveler() {
 		return traveler;
 	}
 
-	public void setTraveler(Travelers traveler) {
+	public void setTraveler(Traveler traveler) {
 		this.traveler = traveler;
 	}
 
-	public Accounts getAccount() {
-		return account;
-	}
-
-	public void setAccount(Accounts account) {
-		this.account = account;
-	}
-
-	public Payments getPayment() {
+	public Payment getPayment() {
 		return payment;
 	}
 
-	public void setPayment(Payments payment) {
+	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
 
