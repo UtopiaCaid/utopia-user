@@ -22,6 +22,7 @@ import com.caid.utopia.service.FlightsService;
 import exception.FlightByIdException;
 import exception.FlightCreationException;
 import exception.FlightDeletionException;
+import exception.FlightDetailsException;
 import exception.RecordNotFoundException;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 
@@ -52,29 +53,41 @@ public class FlightsController {
 	public ResponseEntity<Flights> getFlights(@PathVariable Integer flightId){
 		Flights flights = flightsService.getFlightById(flightId);
 		return new ResponseEntity<>(flights, HttpStatus.OK);
-
-		
 	}
 	
 	@ExceptionHandler(FlightCreationException.class)
-	@RequestMapping(value = "/flights/insert", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<List<Flights>> flightInsertion(@RequestBody Flights newFlights) {
-		List <Flights> updatedFlights = flightsService.addFlight(newFlights);
-		if (updatedFlights.size() == 0) {
+	@RequestMapping(value = "/flights", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Flights> flightInsertion(@RequestBody Flights newFlights) {
+		Flights updatedFlights = flightsService.addFlight(newFlights);
+		if (updatedFlights.getFlightNo() == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<>(updatedFlights, HttpStatus.OK);
+			return new ResponseEntity<>(newFlights, HttpStatus.OK);
 		}			
 	}
 	
 	@ExceptionHandler(FlightDeletionException.class)
-	@RequestMapping(value = "/flights/delete", method = RequestMethod.DELETE, consumes = "application/json")
-	public ResponseEntity<List<Flights>> flightDeletion(@RequestBody Flights flights) {
+	@RequestMapping(value = "/flights", method = RequestMethod.DELETE, consumes = "application/json")
+	public ResponseEntity<Flights> flightDeletion(@RequestBody Flights flights) {
+		if(flights.getFlightNo() == null) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
 		List <Flights> updatedFlights = flightsService.deleteFlight(flights);
 		if (updatedFlights.contains(flights.getFlightNo())){
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		} else {
-			return new ResponseEntity<>(updatedFlights, HttpStatus.OK);
+			return new ResponseEntity<>(flights, HttpStatus.OK);
+		}
+	}
+	
+	@ExceptionHandler(FlightDetailsException.class)
+	@RequestMapping(value = "/flights", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<List<Flights>> flightDetailsUpdate(@RequestBody Flights flights) {
+		List <Flights> updatedFlights = flightsService.updateFlight(flights);
+		if(updatedFlights.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		} else {
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 }
