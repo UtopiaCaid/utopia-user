@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
+import com.caid.utopia.entity.Ticket;
+import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.service.AircraftService;
 import com.caid.utopia.service.FlightService;
 
@@ -26,6 +28,8 @@ import exception.RecordForeignKeyConstraintException;
 import exception.ExceptionReducer;
 import exception.RecordAlreadyExistsException;
 import exception.RecordUpdateException;
+import exception.RecordHasDependenciesException;
+import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -41,6 +45,7 @@ public class AircraftController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class, //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
@@ -145,6 +150,30 @@ public class AircraftController {
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
+	
+	/* Delete Aircraft */
+	@Transactional
+	@RequestMapping(value = "/Aircraft", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Object> deleteAircraft(@RequestBody Aircraft aircraft) throws Exception {
+		try {
+			aircraftService.deleteAircraft(aircraft);
+			return new ResponseEntity<>(aircraft, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
+	
+	/* Delete Aircraft Type */
+	@Transactional
+	@RequestMapping(value = "/AircraftType", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Object> deleteAircraftType(@RequestBody AircraftType aircraftType) throws Exception {
+		try {
+			aircraftService.deleteAircraftType(aircraftType);
+			return new ResponseEntity<>(aircraftType, HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return handleException(e);
 		}

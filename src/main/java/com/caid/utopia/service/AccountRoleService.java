@@ -10,6 +10,7 @@ import com.caid.utopia.repo.AccountRoleRepo;
 import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.repo.PaymentRepo;
 
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 
 
@@ -39,7 +40,7 @@ import exception.RecordNotFoundException;
 			}		
 		}
 		
-		/* Read account by id */
+		/* Read account role by id */
 		public AccountRole getAccountRoleById(Integer id) throws RecordNotFoundException {
 			try {
 				Optional<AccountRole> role = accountRoleRepo.findById(id);
@@ -49,6 +50,24 @@ import exception.RecordNotFoundException;
 					throw new RecordNotFoundException();
 				}
 			}catch(Exception e) {
+				throw new RecordNotFoundException();
+			}
+		}
+		
+		/* Delete account role */
+		public void deleteAccountRole(AccountRole role) throws RecordNotFoundException {
+			try {
+				if(!accountRoleRepo.findById(role.getRoleId()).isPresent()) {
+					throw new RecordNotFoundException();
+				} else {
+					AccountRole temp = accountRoleRepo.findById(role.getRoleId()).get();
+					if(accountRepo.AccountRoleHasAccounts(temp).isEmpty()) {
+						accountRoleRepo.delete(temp);
+					} else {
+						throw new RecordHasDependenciesException();
+					}
+				}
+			} catch (Exception e) {
 				throw new RecordNotFoundException();
 			}
 		}

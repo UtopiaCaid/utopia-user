@@ -11,9 +11,11 @@ import com.caid.utopia.repo.TravelerRepo;
 import com.caid.utopia.repo.AccountRepo;
 import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.repo.PaymentRepo;
+import com.caid.utopia.repo.TicketRepo;
 
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 import exception.RecordUpdateException;
 
@@ -22,7 +24,7 @@ import exception.RecordUpdateException;
 	public class TravelerService {
 		
 		@Autowired
-		FlightRepo flightsRepo;
+		FlightRepo flightRepo;
 		
 		@Autowired
 		TravelerRepo travelerRepo;
@@ -33,6 +35,9 @@ import exception.RecordUpdateException;
 		@Autowired
 		AccountRepo accountRepo;
 				
+		@Autowired
+		TicketRepo ticketRepo;
+		
 		/* Create Traveler */
 		public Traveler createTraveler(Traveler traveler) throws RecordCreationException {
 			try {
@@ -151,7 +156,11 @@ import exception.RecordUpdateException;
 					throw new RecordNotFoundException();
 				}
 				traveler = temp.get();
-				travelerRepo.delete(traveler);
+				if(ticketRepo.TravelerHasTickets(traveler).isEmpty()) {
+					travelerRepo.delete(traveler);
+				} else {
+					throw new RecordHasDependenciesException();
+				}
 			}catch(Exception e) {
 				throw e;
 			}

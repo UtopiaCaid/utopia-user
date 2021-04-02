@@ -36,6 +36,12 @@ public class ExceptionReducer {
 			return new ResponseEntity<>("BAD_REQUEST: Unknown Primary Key", 
 					headers, status);
 		}
+		if (ex instanceof RecordHasDependenciesException) {
+			HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY; // 422
+			headers.add("Dependency Error", "Cannot Delete");
+			return new ResponseEntity<>("UNPROCESSABLE_ENTITY: Other records are dependent", 
+					headers, status);
+		}
 		throw ex;
 	}
 }

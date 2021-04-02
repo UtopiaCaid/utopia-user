@@ -25,6 +25,7 @@ import exception.RecordForeignKeyConstraintException;
 import exception.ExceptionReducer;
 import exception.RecordAlreadyExistsException;
 import exception.RecordUpdateException;
+import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -40,6 +41,7 @@ public class AccountController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {

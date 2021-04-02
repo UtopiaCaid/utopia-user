@@ -6,6 +6,7 @@
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
 
+import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.entity.Flight;
@@ -16,6 +17,7 @@ import com.caid.utopia.repo.FlightRepo;
 import exception.RecordAlreadyExistsException;
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 import exception.RecordUpdateException;
 
@@ -27,7 +29,7 @@ import exception.RecordUpdateException;
 		FlightRepo FlightsRepo;
 		
 		@Autowired
-		FlightRepo flightsRepo;
+		FlightRepo flightRepo;
 		
 		@Autowired
 		AircraftRepo aircraftRepo;
@@ -217,7 +219,40 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		
+		/* Delete Aircraft */
+		public void deleteAircraft(Aircraft aircraft) throws RecordNotFoundException {
+			try {
+				Optional<Aircraft> temp = aircraftRepo.findById(aircraft.getAircraftId());
+				if(temp.isEmpty()) {
+					throw new RecordNotFoundException();
+				}
+				aircraft = temp.get();
+				if(flightRepo.AircraftHasFlights(aircraft).size() > 0) {
+					throw new RecordHasDependenciesException();
+				} else {
+					aircraftRepo.delete(aircraft);
+				}
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		/* Delete Aircraft Type */
+		public void deleteAircraftType(AircraftType aircraftType) throws RecordNotFoundException {
+			try {
+				Optional<AircraftType> temp = aircraftTypeRepo.findById(aircraftType.getAircraftTypeId());
+				if(temp.isEmpty()) {
+					throw new RecordNotFoundException();
+				}
+				aircraftType = temp.get();
+				if(aircraftRepo.AircraftTypeHasAircraft(aircraftType).size() > 0) {
+					throw new RecordHasDependenciesException();
+				} else {
+					aircraftTypeRepo.delete(aircraftType);
+				}
+			}catch(Exception e) {
+				throw e;
+			}
+		}
 		/* Deactivate Aircraft */
 		public Aircraft deactivateAircraft(Aircraft aircraft) throws RecordUpdateException {
 			try {

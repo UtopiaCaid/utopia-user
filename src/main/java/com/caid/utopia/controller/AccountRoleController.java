@@ -27,6 +27,7 @@ import exception.RecordForeignKeyConstraintException;
 import exception.ExceptionReducer;
 import exception.RecordAlreadyExistsException;
 import exception.RecordUpdateException;
+import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -42,6 +43,7 @@ public class AccountRoleController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class, //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
@@ -51,7 +53,7 @@ public class AccountRoleController {
 	
 	/* get all records*/
 	@RequestMapping(value = "/AccountRole", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<AccountRole>> getAllAccount(){
+	public ResponseEntity<List<AccountRole>> getAllAccountRoles(){
 		List<AccountRole> role = accountRoleService.getAllAccountRoles();
 		System.out.println(role.size());
 		if( role.size() == 0) {
@@ -63,12 +65,25 @@ public class AccountRoleController {
 	
 	/* get record by id */
 	@RequestMapping(value = "/AccountRole/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<AccountRole> getAccountById(@PathVariable Integer id){
+	public ResponseEntity<AccountRole> getAccountRoleById(@PathVariable Integer id){
 		AccountRole role = accountRoleService.getAccountRoleById(id);
 		if(role.getRoleId() != id) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(role, HttpStatus.OK);
 		}	
+	}
+	
+	/* delete record */
+	@RequestMapping(value = "/AccountRole", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity<AccountRole> deleteAccountRole(@PathVariable Integer id){
+		AccountRole role = accountRoleService.getAccountRoleById(id);
+		if(role == null) {
+			throw new RecordNotFoundException();
+		} else {
+			accountRoleService.deleteAccountRole(role);
+		}
+		return new ResponseEntity<>(role, HttpStatus.OK);
+
 	}
 }

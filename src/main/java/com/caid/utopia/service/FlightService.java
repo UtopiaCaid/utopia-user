@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.caid.utopia.entity.Flight;
+import com.caid.utopia.entity.Ticket;
 import com.caid.utopia.repo.FlightRepo;
+import com.caid.utopia.repo.TicketRepo;
 
 import exception.FlightByIdException;
 import exception.FlightCreationException;
 import exception.FlightDeletionException;
 import exception.FlightDetailsException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -22,6 +25,9 @@ public class FlightService {
 	
 	@Autowired
 	FlightRepo FlightRepo;
+	
+	@Autowired
+	TicketRepo TicketRepo;
 	
 	public List<Flight> getAllFlight() throws RecordNotFoundException {
 		
@@ -58,6 +64,10 @@ public class FlightService {
 	
 	public List<Flight> deleteFlight(Flight flights) throws FlightDeletionException {
 		try {
+			List<Ticket> tickets = TicketRepo.FlightHasTickets(flights);
+			if(tickets.size() > 0) {
+				throw new RecordHasDependenciesException();
+			}
 			FlightRepo.delete(flights);
 			return FlightRepo.findAll();
 		} catch (Exception e) {
