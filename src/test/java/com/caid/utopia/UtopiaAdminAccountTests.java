@@ -78,7 +78,7 @@ public class UtopiaAdminAccountTests extends UtopiaAdminApplicationTests {
 	void DeleteAccountTest() throws Exception {
 		String uri = "/Account";
 		Account account = new Account();
-		account.setAccountNumber(1);	
+		account.setAccountNumber(-1);	
 		String inputJson = super.mapToJson(account);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();

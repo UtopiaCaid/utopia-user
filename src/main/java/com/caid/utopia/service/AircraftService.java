@@ -177,11 +177,13 @@ import exception.RecordUpdateException;
 				}
 				if((first_class != null && first_class < 0) || (second_class != null && second_class < 0) 
 						|| (third_class != null && third_class < 0) 
-						|| (status != null && status.length() <= 0 && status.length() > 45)) 
+						|| (status != null && status.length() <= 0 && status.length() > 45)
+						|| (first_class + second_class + third_class > seat_count)) 
 				{
 					throw new RecordCreationException();
+				} else {
+					return aircraftRepo.save(updatedAircraft);
 				}
-				return aircraftRepo.save(updatedAircraft);
 			}catch(Exception e) {
 				throw e;
 			}
