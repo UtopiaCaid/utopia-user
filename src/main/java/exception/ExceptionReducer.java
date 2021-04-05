@@ -27,7 +27,7 @@ public class ExceptionReducer {
 		if (ex instanceof RecordForeignKeyConstraintException) {
 			HttpStatus status = HttpStatus.FAILED_DEPENDENCY; // 424
 			headers.add("Foreign Key Error", "No Records Found");
-			return new ResponseEntity<>("FAILED_DEPENDENCY: Invalid Associated Aircraft Type", 
+			return new ResponseEntity<>("FAILED_DEPENDENCY: Cannot delete a record with dependencies", 
 					headers, status);
 		}
 		if (ex instanceof RecordUpdateException) {
