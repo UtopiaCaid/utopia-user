@@ -91,13 +91,13 @@ import exception.RecordUpdateException;
 				if(airportCode > 0) {
 					updatedAirport.setAirportCode(airportCode);
 				}
-				String city = airport.getStatus();
+				String city = airport.getCity();
 				if(city != null && city.length() > 0 && city.length() <= 45) {
-					updatedAirport.setStatus(city);
+					updatedAirport.setCity(city);
 				}
-				String airportName = airport.getStatus();
+				String airportName = airport.getAirportName();
 				if(airportName != null && airportName.length() > 0 && airportName.length() <= 45) {
-					updatedAirport.setStatus(airportName);
+					updatedAirport.setAirportName(airportName);
 				}
 				String status = airport.getStatus();
 				if(status != null && status.length() > 0 && status.length() <= 45) {

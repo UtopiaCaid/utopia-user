@@ -51,7 +51,6 @@ public class AirportController {
 	@RequestMapping(value = "/Airport", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Airport>> getAllAirport(){
 		List<Airport> airport = airportService.getAllAirports();
-		System.out.println(airport.size());
 		if( airport.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
