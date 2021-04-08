@@ -7,7 +7,7 @@ pipeline {
 
         stage('Checkout'){
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [ url: 'https://github.com/UtopiaCaid/utopiaadmin.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [ url: 'https://github.com/UtopiaCaid/utopiaadmin.git']])
             }
         }
         stage('Package') {
