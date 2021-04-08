@@ -7,7 +7,7 @@ pipeline {
 
         stage('Checkout'){
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [ url: 'https://github.com/UtopiaCaid/utopiaadmin.git']])
+                checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/UtopiaCaid/utopiaadmin']]])
             }
         }
         stage('Package') {
@@ -37,10 +37,10 @@ pipeline {
         //    }
         // }
 
-        stage('Cleanup') {
-            steps {
-                sh "docker system prune -f"
-            }
-        }
+        // stage('Cleanup') {
+        //     steps {
+        //         sh "docker system prune -f"
+        //     }
+        // }
     }
 }
