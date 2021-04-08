@@ -3,6 +3,9 @@ pipeline {
     environment {
         COMMIT_HASH="${sh(script:'git rev-parse --short HEAD', returnStdout: true).trim()}"
     }
+    tools {
+        maven 'Maven 3.6.3'
+    }
     stages {
 
         stage('Checkout'){
@@ -14,7 +17,7 @@ pipeline {
             steps {
                 echo 'Building..'
 
-                withMaven {
+                script {
                     sh "mvn clean package"
                 }
             }
