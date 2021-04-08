@@ -39,10 +39,10 @@ pipeline {
         //    }
         // }
 
-        // stage('Cleanup') {
-        //     steps {
-        //         sh "docker system prune -f"
-        //     }
-        // }
+        stage('Cleanup') {
+            steps {
+                sh "docker system prune -f"
+            }
+        }
     }
 }
