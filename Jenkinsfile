@@ -28,7 +28,7 @@ pipeline {
               
                 sh "docker tag utopia-admin:$COMMIT_HASH 499898275313.dkr.ecr.us-east-2.amazonaws.com/utopia-admin:$COMMIT_HASH"
 
-                sh "docker push 499898275313.dkr.ecr.us-east-2.amazonaws.com/utopiaa-dmin:$COMMIT_HASH"              
+                sh "docker push 499898275313.dkr.ecr.us-east-2.amazonaws.com/utopia-admin:$COMMIT_HASH"              
                 
                 // sh "docker tag utopiaadmin:$COMMIT_HASH $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
                 // sh "docker push $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
