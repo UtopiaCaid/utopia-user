@@ -18,7 +18,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
-                    echo 'testing update auto'
+                    echo 'testing update auto 2'
                     sh "mvn clean package -DskipTests"
                 }
             }
