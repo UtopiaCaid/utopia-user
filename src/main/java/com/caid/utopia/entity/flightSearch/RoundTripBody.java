@@ -2,8 +2,6 @@ package com.caid.utopia.entity.flightSearch;
 
 import java.time.LocalDate;
 
-import com.caid.utopia.entity.Airport;
-
 public class RoundTripBody {
 	private Integer airportDepId;
 	private Integer airportArrId;

@@ -29,19 +29,35 @@ import com.caid.utopia.entity.flightSearch.RoundTripBody;
 import com.caid.utopia.service.FlightSearchService;
 import com.caid.utopia.service.FlightService;
 
+import exception.ExceptionReducer;
 import exception.FlightByIdException;
 import exception.FlightCreationException;
 import exception.FlightDeletionException;
 import exception.FlightDetailsException;
+import exception.RecordAlreadyExistsException;
+import exception.RecordCreationException;
+import exception.RecordForeignKeyConstraintException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
+import exception.RecordUpdateException;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-public class FlightController {
+public class FlightSearchController {
 	
-	public static final String PAGE_NOT_FOUND_LOG_CATEGORY = "org.springframework.web.servlet.PageNotFound";
-
+	@ExceptionHandler({
+		RecordNotFoundException.class, //404
+		RecordCreationException.class, //404
+		RecordForeignKeyConstraintException.class, //409
+		RecordAlreadyExistsException.class, //409
+		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class //422
+	})
+	@Nullable
+	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
+		return ExceptionReducer.handleException(ex);
+	}
 	@Autowired
 	FlightService flightService;
 	
@@ -49,74 +65,10 @@ public class FlightController {
 	FlightSearchService flightSearchService;
 	
 
-	protected ResponseEntity<Object> handleExceptionInternal(
-			Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-		if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
-			request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
-		}
-		return new ResponseEntity<>(body, headers, status);
-	}
 	
-	@ExceptionHandler(RecordNotFoundException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Flight>> getAllFlight(){
-		List<Flight> flights = flightService.getAllFlight();
-		if (flights.size() == 0) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}else {
-			return new ResponseEntity<>(flights, HttpStatus.OK);
-		}
-		
-	}
-	
-
-	@ExceptionHandler(FlightByIdException.class)
-	@RequestMapping(value = "/flights/{flightId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Flight> getFlight(@PathVariable Integer flightId){
-		Flight flights = flightService.getFlightById(flightId);
-		return new ResponseEntity<>(flights, HttpStatus.OK);
-	}
-	
-	@ExceptionHandler(FlightCreationException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Flight> flightInsertion(@RequestBody Flight newFlight) {
-		Flight updatedFlights = flightService.addFlight(newFlight);
-		if (updatedFlights.getFlightNo() == null) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(newFlight, HttpStatus.OK);
-		}			
-	}
-	
-	@ExceptionHandler(FlightDeletionException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.DELETE, consumes = "application/json")
-	public ResponseEntity<Flight> flightDeletion(@RequestBody Flight flights) {
-		if(flights.getFlightNo() == null) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		}
-		List <Flight> updatedFlights = flightService.deleteFlight(flights);
-		if (updatedFlights.contains(flights.getFlightNo())){
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		} else {
-			return new ResponseEntity<>(flights, HttpStatus.OK);
-		}
-	}
-	
-	@ExceptionHandler(FlightDetailsException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Flight> flightDetailsUpdate(@RequestBody Flight flight) {
-		List <Flight> updatedFlights = flightService.updateFlight(flight);
-		if(updatedFlights.size() == 0) {
-			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-		} else {
-			return new ResponseEntity<>(flight, HttpStatus.OK);
-		}
-	}
-	
-	@RequestMapping(value = "/OneWayNonLayover1", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Flight>> OneWayNoLayover(
-			@RequestBody OneWayBody body){
+	@RequestMapping(value = "/OneWayNonLayover", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Object> OneWayNoLayover (
+			@RequestBody OneWayBody body) throws Exception{
 		try {
 			List<Flight> flights = flightSearchService.FindOneWayNoLayover(
 					body.getAirportDepId(), body.getAirportArrId(),
@@ -127,13 +79,13 @@ public class FlightController {
 				return new ResponseEntity<>(flights, HttpStatus.OK);
 			}
 		} catch (Exception e) {
-			throw new RecordNotFoundException();
+			return handleException(e);
 		}
 	}
 	
-	@RequestMapping(value = "/OneWayLayover1", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<ArrayList<Flight>>> OneWayLayover(
-			@RequestBody OneWayBody body){
+	@RequestMapping(value = "/OneWayLayover", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Object> OneWayLayover(
+			@RequestBody OneWayBody body) throws Exception{
 		try {
 			List<ArrayList<Flight>> flights = flightSearchService.FindOneWayLayover(
 					body.getAirportDepId(), body.getAirportArrId(),
@@ -144,13 +96,13 @@ public class FlightController {
 				return new ResponseEntity<>(flights, HttpStatus.OK);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+			return handleException(e);
 		}
 	}
 	
-	@RequestMapping(value = "/RoundTripNoLayover1", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<List<Flight>>> RoundTripBodysNoLayovers(
-			@RequestBody RoundTripBody body) {
+	@RequestMapping(value = "/RoundTripNoLayover", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Object> RoundTripBodysNoLayovers(
+			@RequestBody RoundTripBody body) throws Exception{
 		try {
 			List<Flight> departFlights = flightSearchService.FindRoundTripDepartureNoLayover(
 					body.getAirportDepId(), body.getAirportArrId(),
@@ -170,13 +122,13 @@ public class FlightController {
 			flights.add(returnFlights);
 			return new ResponseEntity<>(flights, HttpStatus.OK);
 		} catch (Exception e) {
-			throw new RecordNotFoundException();
+			return handleException(e);
 		}
 	}
 	
-	@RequestMapping(value = "/RoundTripLayovers1", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/RoundTripLayovers", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<List<ArrayList<Flight>>>> RoundTripLayovers(
-			@RequestBody RoundTripBody body) {
+			@RequestBody RoundTripBody body) throws Exception{
 		try {
 			/* Get all layover and non-layover depart flights from A -> C */
 			ArrayList<List<ArrayList<Flight>>> FlightCombinations = new ArrayList<List<ArrayList<Flight>>>(2);
@@ -219,7 +171,7 @@ public class FlightController {
 					System.out.println(temp.get(0).getFlightNo());
 					if(ReturnFlights != null) {
 						ReturnFlights.add(temp);
-					} else {
+					} else {	
 						ReturnFlights = new ArrayList<ArrayList<Flight>>();
 					}
 				}

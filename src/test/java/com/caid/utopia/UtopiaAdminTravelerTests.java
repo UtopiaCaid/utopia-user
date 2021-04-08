@@ -93,6 +93,6 @@ public class UtopiaAdminTravelerTests extends UtopiaAdminApplicationTests {
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(202,status);
+		assertEquals(422,status); // dependency exception
 	}
 }
