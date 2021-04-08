@@ -8,11 +8,11 @@ pipeline {
     }
     stages {
 
-        stage('Checkout'){
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/UtopiaCaid/utopiaadmin']]])
-            }
-        }
+        // stage('Checkout'){
+        //     steps {
+        //         checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/UtopiaCaid/utopiaadmin']]])
+        //     }
+        // }
         stage('Package') {
             steps {
                 echo 'Building..'
