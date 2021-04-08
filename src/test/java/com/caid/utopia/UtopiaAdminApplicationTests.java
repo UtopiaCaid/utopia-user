@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest()
+@SpringBootTest(classes = UtopiaAdminApplicaton.class)
 @WebAppConfiguration
 public abstract class UtopiaAdminApplicationTests {
 
