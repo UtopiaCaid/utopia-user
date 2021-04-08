@@ -1,25 +1,22 @@
 package com.caid.utopia.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.repo.FlightRepo;
 
 import exception.FlightByIdException;
 import exception.FlightCreationException;
-import exception.RecordNotFoundException;
 import exception.FlightDeletionException;
-import io.micrometer.core.ipc.http.HttpSender.Response;
+import exception.FlightDetailsException;
+import exception.RecordNotFoundException;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Service
 public class FlightService {
 	
@@ -49,10 +46,11 @@ public class FlightService {
 		}
 	}
 	
-	public List<Flight> addFlight(Flight flights) throws FlightCreationException {
+
+	public Flight addFlight(Flight flight) throws FlightCreationException {
 		try {
-			 FlightRepo.save(flights);
-			 return FlightRepo.findAll();
+			 FlightRepo.save(flight);
+			 return flight;
 		} catch (Exception e) {
 			throw new FlightCreationException();
 		}
@@ -66,5 +64,18 @@ public class FlightService {
 			throw new FlightDeletionException();
 		}
 	}
+	
+	public List<Flight> updateFlight(Flight flights) throws FlightDetailsException {
+		try {
+			if(FlightRepo.existsById(flights.getFlightNo())) {
+				FlightRepo.save(flights);
+				return FlightRepo.findAll();
+			}
+			throw new FlightDetailsException();
+		} catch (Exception e) {
+			throw new FlightDetailsException();
+		}
+	}
+	
 	
 }
