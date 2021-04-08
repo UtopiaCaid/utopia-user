@@ -4,7 +4,6 @@ pipeline {
         COMMIT_HASH="${sh(script:'git rev-parse --short HEAD', returnStdout: true).trim()}"
     }
     tools {
-        jdk 'openjdk-11'
         maven 'Maven 3.6.3'
         dockerTool 'docker-latest'
     }
