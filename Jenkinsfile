@@ -8,11 +8,6 @@ pipeline {
     }
     stages {
 
-        // stage('Checkout'){
-        //     steps {
-        //         checkout([$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/UtopiaCaid/utopiaadmin']]])
-        //     }
-        // }
         stage('Package') {
             steps {
                 echo 'Building..'
@@ -26,10 +21,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Deploying....'
-                sh "$AWS_LOGIN"                
                 sh "docker build --tag utopiaadmin:$COMMIT_HASH ."
-                sh "docker tag utopiaadmin:$COMMIT_HASH $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
-                sh "docker push $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
+                // sh "$AWS_LOGIN"                
+                
+                // sh "docker tag utopiaadmin:$COMMIT_HASH $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
+                // sh "docker push $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
             }
         }
 
