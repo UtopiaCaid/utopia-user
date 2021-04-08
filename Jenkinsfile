@@ -18,9 +18,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
-                    sh 'maven install'
-                    sh "mvn clean package "
-                    // -DskipTests
+                    sh "mvn clean package -DskipTests"
                 }
             }
         }
