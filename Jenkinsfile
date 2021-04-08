@@ -18,8 +18,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
-                    sh 'java -version'
-                    sh "mvn clean"
+                    sh "mvn clean build"
                 }
             }
         }
