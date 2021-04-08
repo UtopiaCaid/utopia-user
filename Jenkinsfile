@@ -13,7 +13,9 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Building..'
+
                 script {
+                    sh 'export PATH=/home/ec2-user/apache-maven-3.8.1/bin:$PATH'
                     sh "mvn clean package"
                 }
             }
