@@ -76,14 +76,14 @@ public class AccountRoleController {
 	
 	/* delete record */
 	@RequestMapping(value = "/AccountRole", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<AccountRole> deleteAccountRole(@PathVariable Integer id){
-		AccountRole role = accountRoleService.getAccountRoleById(id);
-		if(role == null) {
+	public ResponseEntity<AccountRole> deleteAccountRole(@RequestBody AccountRole role){
+		AccountRole temp = accountRoleService.getAccountRoleById(role.getRoleId());
+		if(temp == null) {
 			throw new RecordNotFoundException();
 		} else {
-			accountRoleService.deleteAccountRole(role);
+			accountRoleService.deleteAccountRole(temp);
 		}
-		return new ResponseEntity<>(role, HttpStatus.OK);
+		return new ResponseEntity<>(temp, HttpStatus.OK);
 
 	}
 }

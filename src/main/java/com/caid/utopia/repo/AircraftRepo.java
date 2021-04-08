@@ -18,3 +18,6 @@ public interface AircraftRepo extends JpaRepository<Aircraft, Integer>{
 		@Query("FROM Aircraft WHERE aircraftType = :curr ")
 		List<Aircraft> AircraftTypeHasAircraft(@Param("curr") AircraftType curr);
 }
+		
+		
+
