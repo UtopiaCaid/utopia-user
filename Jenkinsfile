@@ -23,6 +23,9 @@ pipeline {
                 echo 'Deploying....'
                 sh "docker build --tag utopiaadmin:$COMMIT_HASH ."
                 sh 'docker images'
+                sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 499898275313.dkr.ecr.us-east-2.amazonaws.com'
+                sh 'docker tag utopia-admin:latest 499898275313.dkr.ecr.us-east-2.amazonaws.com/utopia-admin:latest'
+                sh 'docker push 499898275313.dkr.ecr.us-east-2.amazonaws.com/utopia-admin:latest'
                 // sh "$AWS_LOGIN"                
                 
                 // sh "docker tag utopiaadmin:$COMMIT_HASH $AWS_ID/utopia-admin/admin:$COMMIT_HASH"
