@@ -5,7 +5,6 @@ pipeline {
     }
     tools {
         maven 'Maven 3.6.3'
-        jdk 'jdk_1.8.0_282'
     }
     stages {
 
@@ -19,6 +18,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
+                    sh 'java -version'
                     sh "mvn clean package"
                 }
             }
