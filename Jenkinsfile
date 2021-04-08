@@ -15,7 +15,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
-                    sh 'export PATH=/home/ec2-user/apache-maven-3.8.1/bin:$PATH'
+                    sh 'PATH=/home/ec2-user/apache-maven-3.8.1/bin:$PATH'
                     sh 'echo $PATH'
                     sh "mvn clean package"
                 }
