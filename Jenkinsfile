@@ -15,8 +15,7 @@ pipeline {
                 echo 'Building..'
 
                 script {
-                    echo 'testing update auto 2'
-                    sh "mvn clean package"
+                    sh "mvn clean package -DskipTests"
                 }
             }
         }
@@ -45,6 +44,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 sh "docker system prune -f"
+                // sh "docker image prune -a"
             }
         }
     }
