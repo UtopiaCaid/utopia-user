@@ -28,7 +28,7 @@ public class UtopiaAdminAircraftTests extends UtopiaAdminApplicationTests {
 	void ChangeAirplaneStatus() throws Exception {
 		AircraftType aircraftType = new AircraftType();
 		String uri = "/AircraftType";
-		aircraftType.setAircraftType(-1);
+		aircraftType.setAircraftType(-2);
 		aircraftType.setaircraftTypeName("testAircraftType");
 		aircraftType.setSeatMaximum(100);
 		aircraftType.setManufacturer("testManufacturer");
@@ -72,7 +72,7 @@ public class UtopiaAdminAircraftTests extends UtopiaAdminApplicationTests {
 	void CreateAircraftTest() throws Exception {
 		String uri = "/AircraftType";
 		AircraftType aircraftType = new AircraftType();
-		aircraftType.setAircraftType(-1);
+		aircraftType.setAircraftType(-2);
 		aircraftType.setaircraftTypeName("testAircraftType");
 		aircraftType.setSeatMaximum(100);
 		aircraftType.setManufacturer("testManufacturer");
@@ -100,7 +100,7 @@ public class UtopiaAdminAircraftTests extends UtopiaAdminApplicationTests {
 	void CreateAircraftTypeTest() throws Exception {
 		String uri = "/AircraftType";
 		AircraftType aircraftType = new AircraftType();
-		aircraftType.setAircraftType(-1);
+		aircraftType.setAircraftType(-2);
 		aircraftType.setaircraftTypeName("testAircraftType");
 		aircraftType.setSeatMaximum(100);
 		aircraftType.setManufacturer("testManufacturer");
@@ -139,6 +139,60 @@ public class UtopiaAdminAircraftTests extends UtopiaAdminApplicationTests {
 		assertTrue(aircraftType.length >= 0);
 	}
 	
-	/* Service Tests */
+	/* Update Planes */
+	@Test
+	@Transactional
+	void UpdateAircraftTest() throws Exception {
+		String uri = "/Aircraft";
+		Aircraft aircraft = new Aircraft();
+		aircraft.setAircraftId(-1);
+		aircraft.setSeatCount(5000);
+		String inputJson = super.mapToJson(aircraft);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(202, status);
+	}
 	
+	/* Update Planes Type */
+	@Test
+	@Transactional
+	void UpdateAircraftTypeTest() throws Exception {
+		String uri = "/AircraftType";
+		AircraftType aircraftType = new AircraftType();
+		aircraftType.setAircraftType(-1);
+		aircraftType.setSeatMaximum(1000);
+		String inputJson = super.mapToJson(aircraftType);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(202, status);
+	}
+	
+	/* Delete Planes */
+	@Test
+	@Transactional
+	void DeleteAircraftTest() throws Exception {
+		String uri = "/Aircraft";
+		Aircraft aircraft = new Aircraft();
+		aircraft.setAircraftId(-1);
+		String inputJson = super.mapToJson(aircraft);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(202, status);
+	}
+	
+	@Test
+	@Transactional
+	void DeleteAircraftTypeTest() throws Exception {
+		String uri = "/AircraftType";
+		AircraftType aircraftType = new AircraftType();
+		aircraftType.setAircraftType(-1);
+		String inputJson = super.mapToJson(aircraftType);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(202, status);
+	}
 }

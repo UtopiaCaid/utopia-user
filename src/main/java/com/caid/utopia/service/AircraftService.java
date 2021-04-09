@@ -139,31 +139,34 @@ import exception.RecordUpdateException;
 		/* Update Aircraft */
 		public Aircraft updateAircraft(Aircraft aircraft) throws RecordUpdateException {
 			try {
-				Optional<AircraftType> aircraftType = aircraftTypeRepo.findById(aircraft.getAircraftType().getAircraftTypeId());
-				if(aircraftRepo.findById(aircraft.getAircraftId()).isEmpty()) {
-					throw new RecordUpdateException();
-				}
-				if(aircraftType.isEmpty()) {
-					throw new RecordForeignKeyConstraintException();
-				}
-				if(!aircraftType.get().getAircraftTypeId().equals(aircraft.getAircraftType().getAircraftTypeId())) {
-					throw new RecordUpdateException();
-				}
 				Aircraft updatedAircraft = aircraftRepo.findById(aircraft.getAircraftId()).get();
+				if(updatedAircraft == null) {
+					throw new RecordUpdateException();
+				}
+				if(aircraft.getAircraftType() != null) {
+					Optional<AircraftType> aircraftType = aircraftTypeRepo.findById(aircraft.getAircraftType().getAircraftTypeId());
+					if(!aircraftType.isEmpty()) {
+						updatedAircraft.setAircraftType(aircraftType.get());
+					}
+					if(!aircraftType.get().getAircraftTypeId().equals(aircraft.getAircraftType().getAircraftTypeId())) {
+						throw new RecordUpdateException();
+					}
+				}
+
 				Integer seat_count = aircraft.getSeatCount();
-				if(seat_count > 0) {
+				if(seat_count != null && seat_count > 0) {
 					updatedAircraft.setSeatCount(seat_count);
 				}
 				Integer first_class = aircraft.getFirstClassCount();
 				Integer second_class = aircraft.getSecondClassCount();
 				Integer third_class = aircraft.getThirdClassCount();
-				if(first_class > 0) {
+				if(first_class != null && first_class > 0) {
 					updatedAircraft.setFirstClassCount(first_class);
 				}
-				if(second_class > 0) {
+				if(second_class != null && second_class > 0) {
 					updatedAircraft.setSecondClassCount(second_class);
 				}
-				if(third_class > 0) {
+				if(third_class != null && third_class > 0) {
 					updatedAircraft.setThirdClassCount(third_class);
 				}
 				String status = aircraft.getAircraftStatus();
@@ -173,13 +176,6 @@ import exception.RecordUpdateException;
 				if(updatedAircraft.getSeatCount() < 
 						updatedAircraft.getFirstClassCount() + updatedAircraft.getSecondClassCount()
 						+ updatedAircraft.getThirdClassCount()) {
-					throw new RecordCreationException();
-				}
-				if((first_class != null && first_class < 0) || (second_class != null && second_class < 0) 
-						|| (third_class != null && third_class < 0) 
-						|| (status != null && status.length() <= 0 && status.length() > 45)
-						|| (first_class + second_class + third_class > seat_count)) 
-				{
 					throw new RecordCreationException();
 				} else {
 					return aircraftRepo.save(updatedAircraft);
@@ -198,22 +194,16 @@ import exception.RecordUpdateException;
 				}
 				AircraftType updatedAircraftType = temp.get();
 				String name = aircraftType.getaircraftTypeName();
-				if(name.length() > 0 && name.length() <= 45){
+				if(name != null && name.length() > 0 && name.length() <= 45){
 					updatedAircraftType.setaircraftTypeName(name);
 				}
 				Integer seat_maximum = aircraftType.getSeatMaximum();
-				if(seat_maximum > 0) {
+				if(seat_maximum != null && seat_maximum > 0) {
 					updatedAircraftType.setSeatMaximum(seat_maximum);
 				}
 				String manufacturer = aircraftType.getManufacturer();
-				if(manufacturer.length() > 0 && manufacturer.length() <= 45){
+				if(manufacturer != null && manufacturer.length() > 0 && manufacturer.length() <= 45){
 					updatedAircraftType.setManufacturer(manufacturer);
-				}
-				if(name == null || seat_maximum == null || manufacturer == null
-						|| seat_maximum < 0 || name.length() <= 0 || name.length() > 45
-						|| manufacturer.length() <= 0 || manufacturer.length() > 45) 
-				{
-					throw new RecordCreationException();	
 				}
 				return aircraftTypeRepo.save(aircraftType);
 			}catch(Exception e) {

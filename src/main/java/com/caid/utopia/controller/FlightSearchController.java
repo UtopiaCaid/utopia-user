@@ -179,7 +179,7 @@ public class FlightSearchController {
 					FlightCombinations.add(ReturnFlights);
 				}
 			}
-			return new ResponseEntity<>(FlightCombinations, HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(FlightCombinations, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);

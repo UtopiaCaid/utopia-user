@@ -59,7 +59,7 @@ public class FlightController {
 	}
 	
 	@ExceptionHandler(RecordNotFoundException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping	(value = "/flights", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Flight>> getAllFlight(){
 		List<Flight> flights = flightService.getAllFlight();
 		if (flights.size() == 0) {
