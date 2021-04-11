@@ -16,7 +16,7 @@ import com.caid.utopia.entity.Ticket;
 import com.caid.utopia.entity.Traveler;
 
 
-public class UtopiaAdminTicketTests extends UtopiaAdminApplicationTests {
+public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	
 	@Override
 	@BeforeEach

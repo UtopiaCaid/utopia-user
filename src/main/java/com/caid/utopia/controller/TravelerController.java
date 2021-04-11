@@ -106,6 +106,7 @@ public class TravelerController {
 	}
 	
 	/* delete record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Traveler", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deleteTraveler(@RequestBody Traveler traveler) throws Exception {
@@ -116,5 +117,6 @@ public class TravelerController {
 			return handleException(e);
 		}
 	}
+	*/
 		
 }

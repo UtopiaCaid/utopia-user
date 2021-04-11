@@ -19,7 +19,7 @@ import com.caid.utopia.entity.flightSearch.OneWayBody;
 import com.caid.utopia.entity.flightSearch.RoundTripBody;
 
 
-public class UtopiaAdminFlightSearchTests extends UtopiaAdminApplicationTests {
+public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 	
 	@Override
 	@BeforeEach

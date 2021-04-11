@@ -16,7 +16,7 @@ import com.caid.utopia.entity.Airport;
 import com.caid.utopia.entity.Traveler;
 
 
-public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
+public class UtopiaUserAirportTests extends UtopiaUserApplicationTests {
 	
 	@Override
 	@BeforeEach
@@ -55,41 +55,4 @@ public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
 		assertTrue(airport.length >= 0);
 	}
 	
-	@Test
-	@Transactional
-	void UpdateAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportId(1);
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test2");
-		airport.setCity("Airport City Test2");
-		airport.setStatus("Inactive");
-		String inputJson = super.mapToJson(airport);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(202, status);
-	}
-	
-	@Test
-	@Transactional
-	void DeleteAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test");
-		airport.setCity("Airport City Test");
-		airport.setStatus("Active");
-		String inputJson = super.mapToJson(airport);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(201, status);
-		inputJson = mvcResult.getResponse().getContentAsString();
-		mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		status = mvcResult.getResponse().getStatus();
-		assertEquals(202,status);
-	}
 }

@@ -20,12 +20,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = UtopiaAdminApplication.class)
+@SpringBootTest(classes = UtopiaUserApplication.class)
 @TestPropertySource(
 		  locations = "classpath:application.properties"
 		)
 @WebAppConfiguration
-public abstract class UtopiaAdminApplicationTests {
+public abstract class UtopiaUserApplicationTests {
 
 	protected MockMvc mvc;
 

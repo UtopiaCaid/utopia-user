@@ -74,6 +74,7 @@ public class AirportController {
 	
 	
 	/* create record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Airport", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> createAirport(@RequestBody Airport airport) throws Exception {
@@ -87,8 +88,9 @@ public class AirportController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	/* update record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Airport", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> updateAirport(@RequestBody Airport airport) throws Exception {
@@ -102,7 +104,8 @@ public class AirportController {
 			return handleException(e);
 		}
 	}
-	
+	*/
+	/*
 	@Transactional
 	@RequestMapping(value = "/Airport", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deleteAirport(@RequestBody Airport airport) throws Exception {
@@ -113,5 +116,5 @@ public class AirportController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 }

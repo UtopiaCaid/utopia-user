@@ -104,6 +104,7 @@ public class AccountController {
 	}
 	
 	/* delete record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Account", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deleteAccount(@RequestBody Account account) throws Exception {
@@ -114,7 +115,7 @@ public class AccountController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	
 	/* deactivate record */
 	@Transactional

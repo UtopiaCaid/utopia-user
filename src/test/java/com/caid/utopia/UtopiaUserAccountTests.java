@@ -18,7 +18,7 @@ import com.caid.utopia.entity.Airport;
 import com.caid.utopia.entity.Traveler;
 
 
-public class UtopiaAdminAccountTests extends UtopiaAdminApplicationTests {
+public class UtopiaUserAccountTests extends UtopiaUserApplicationTests {
 	
 	@Override
 	@BeforeEach
@@ -73,6 +73,7 @@ public class UtopiaAdminAccountTests extends UtopiaAdminApplicationTests {
 		assertEquals(202, status);
 	}
 	
+	/*
 	@Test
 	@Transactional
 	void DeleteAccountTest() throws Exception {
@@ -85,7 +86,7 @@ public class UtopiaAdminAccountTests extends UtopiaAdminApplicationTests {
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(202,status);
 	}
-	
+	*/
 	@Test
 	@Transactional
 	void DeactivateAccountTest() throws Exception {

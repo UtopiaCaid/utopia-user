@@ -98,6 +98,7 @@ public class AircraftController {
 		}	
 	}
 	/* create record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Aircraft", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> createAircraft(@RequestBody Aircraft aircraft) throws Exception {
@@ -125,8 +126,9 @@ public class AircraftController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	/* update record */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Aircraft", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> updateAircraft(@RequestBody Aircraft aircraft) throws Exception {
@@ -154,8 +156,9 @@ public class AircraftController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	/* Delete Aircraft */
+	/*
 	@Transactional
 	@RequestMapping(value = "/Aircraft", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deleteAircraft(@RequestBody Aircraft aircraft) throws Exception {
@@ -166,8 +169,9 @@ public class AircraftController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	/* Delete Aircraft Type */
+	/*
 	@Transactional
 	@RequestMapping(value = "/AircraftType", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deleteAircraftType(@RequestBody AircraftType aircraftType) throws Exception {
@@ -178,8 +182,11 @@ public class AircraftController {
 			return handleException(e);
 		}
 	}
-	
+	*/
 	/* Activate/Deactivate Aircraft */
+	
+	/*
+
 	@Transactional
 	@RequestMapping(value = "/Aircraft/Deactivate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> deactivateAircraft(@RequestBody Aircraft aircraft) throws Exception {
@@ -207,5 +214,6 @@ public class AircraftController {
 			return handleException(e);
 		}
 	}
-	
+	*/
+
 }
