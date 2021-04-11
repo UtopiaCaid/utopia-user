@@ -138,11 +138,6 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 		flight.setFlightNo(5);
 
 		Airport airportIdArrival = new Airport();
-		airportIdArrival.setAirportId(2);
-		airportIdArrival.setAirportCode(10056);
-		airportIdArrival.setCity("Kodiak Island");
-		airportIdArrival.setAirportName("A43");
-		airportIdArrival.setStatus("active");
 		flight.setairportArrival(airportIdArrival);
 		
 		Aircraft aircraft = new Aircraft();

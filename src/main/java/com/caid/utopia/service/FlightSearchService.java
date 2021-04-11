@@ -34,14 +34,6 @@ import exception.RecordNotFoundException;
 		
 		@Autowired
 		AirportRepo airportRepo;
-		/*
-		    @Param("airportDep") Airport aiportDep, @Param("airportArr") Airport airportArr,  
-			@Param("flightDepBeginDate") LocalDate flightDepBeginDate,
-			@Param("flightDepEndDate") LocalDate flightDepEndDate,
-			@Param("flightArrBeginDate") LocalDate flightArrBeginDate,
-			@Param("flightArrEndDate") LocalDate flightArrEndDate
-			);
-		 */
 		
 		
 		/* Find Flights from a specific airport */
