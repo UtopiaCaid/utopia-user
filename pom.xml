@@ -8,11 +8,11 @@
 		<version>2.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>lms</groupId>
-	<artifactId>utopiaadmin</artifactId>
+	<groupId>caid</groupId>
+	<artifactId>utopiauser</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>utopiaadmin</name>
-	<description>admin microservice for utopia airlines</description>
+	<name>utopiauser</name>
+	<description>user microservice for utopia airlines</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -21,7 +21,6 @@
 		<dependency>
     		<groupId>javax.persistence</groupId>
     		<artifactId>javax.persistence-api</artifactId>
-    		<version>2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>

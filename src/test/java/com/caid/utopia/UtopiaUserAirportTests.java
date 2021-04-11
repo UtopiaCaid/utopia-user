@@ -24,23 +24,6 @@ public class UtopiaUserAirportTests extends UtopiaUserApplicationTests {
 		super.setUp();
 	}
 	
-	/* Controller Tests */
-	@Test
-	@Transactional
-	void CreateAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test");
-		airport.setCity("Airport City Test");
-		airport.setStatus("Active");
-		String inputJson = super.mapToJson(airport);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(201, status);
-	}
-	
 	@Test
 	void ReadAirportTest() throws Exception {
 		String uri = "/Airport";
