@@ -52,6 +52,17 @@ public class Ticket implements Serializable {
 	@NonNull
 	private float ticketPrice;
 	
+	@Column(name = "ticket_class")
+	private Integer ticketClass;
+	
+	public Integer getTicketClass() {
+		return ticketClass;
+	}
+
+	public void setTicketClass(Integer ticketClass) {
+		this.ticketClass = ticketClass;
+	}
+
 	@Column(name = "date_issued")
 	@NonNull
 	private LocalDate dateIssued;
