@@ -3,16 +3,21 @@ package com.caid.utopia.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.AccountRole;
+import com.caid.utopia.entity.Flight;
+import com.caid.utopia.entity.Ticket;
 import com.caid.utopia.entity.Account;
 import com.caid.utopia.repo.AccountRepo;
 import com.caid.utopia.repo.AccountRoleRepo;
 import com.caid.utopia.repo.AccountRepo;
 import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.repo.PaymentRepo;
+import com.caid.utopia.repo.TicketRepo;
 import com.caid.utopia.repo.TravelerRepo;
 
 import exception.RecordCreationException;
@@ -23,16 +28,19 @@ import exception.RecordUpdateException;
 
 
 	@Service
-	public class AccountService {
+	public class UserService {
 		
 		@Autowired
-		FlightRepo flightsRepo;
+		FlightRepo flightRepo;
 		
 		@Autowired
 		PaymentRepo paymentRepo;
 		
 		@Autowired
 		TravelerRepo travelerRepo;
+		
+		@Autowired
+		TicketRepo ticketRepo;
 		
 		@Autowired
 		AccountRepo accountRepo;
@@ -96,6 +104,44 @@ import exception.RecordUpdateException;
 			}
 		}
 		
+		/* Find Account Flight History (includes upcoming flights) */
+		public Set<Flight> getAccountFlightHistory(Account account) throws RecordNotFoundException {
+			try {
+				Set<Flight> flights = flightRepo.FindAccountFlightHistory(account);
+				return flights;
+			} catch (Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Find Account Upcoming Flights */
+		public Set<Flight> getAccountUpcomingFlights(Account account) throws RecordNotFoundException {
+			try {
+				Set<Flight> flights = flightRepo.FindAccountUpcomingFlights(account);
+				return flights;
+			} catch (Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Find Account Ticket History */
+		public Set<Ticket> getAccountTicketHistory(Account account) throws RecordNotFoundException {
+			try {
+				Set<Ticket> tickets = ticketRepo.FindAccountTicketHistory(account);
+				return tickets;
+			} catch (Exception e) {
+				throw e;
+			}
+		}
+		/* Find Account Upcoming Tickets */
+		public Set<Ticket> getAccountUpcomingTickets(Account account) throws RecordNotFoundException {
+			try {
+				Set<Ticket> tickets = ticketRepo.FindAccountUpcomingTickets(account);
+				return tickets;
+			} catch (Exception e) {
+				throw e;
+			}
+		}
 		
 		/* Update Account */
 		public Account updateAccount(Account account) throws RecordUpdateException {
@@ -139,25 +185,4 @@ import exception.RecordUpdateException;
 				throw e;
 			}
 		}
-		
-		/* Delete Account */
-		/*
-		public void deleteAccount(Account account) throws RecordUpdateException {
-			try {
-				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
-				if(temp.isEmpty()) {
-					throw new RecordNotFoundException();
-				}
-				account = temp.get();
-				if(travelerRepo.AccountHasTravelers(account).isEmpty()
-						&& paymentRepo.AccountHasPayments(account).isEmpty()) {
-					accountRepo.delete(account);
-				} else {
-					throw new RecordHasDependenciesException();
-				}
-			}catch(Exception e) {
-				throw e;
-			}
-		}
-		*/
 	}
