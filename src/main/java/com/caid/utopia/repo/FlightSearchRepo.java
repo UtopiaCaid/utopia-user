@@ -3,6 +3,7 @@ package com.caid.utopia.repo;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,8 +52,26 @@ public interface FlightSearchRepo extends JpaRepository<Flight, Integer>{
 			@Param("flightDepEndDate") LocalDate flightDepEndDate
 			);
 	
+	/* find one way layover flights initial flight */
+	@Query("FROM Flight WHERE "
+			+ "airportDeparture = :airportDep "
+			+ "AND departure >= :flightDepBeginDate AND departure <= :flightDepEndDate "
+			+ "AND status = 'Ready'")
+	List<Flight> FindOneWayLayoverInit(
+			@Param("airportDep") Airport aiportDep,  
+			@Param("flightDepBeginDate") LocalDate flightDepBeginDate,
+			@Param("flightDepEndDate") LocalDate flightDepEndDate
+			);
 	
-	
+	/* find one way layover flights non-initia flight */
+	@Query("FROM Flight WHERE "
+			+ "airportDeparture = :airportDep "
+			+ "AND departure >= :initFlightArr "
+			+ "AND status = 'Ready'")
+	ArrayList<Flight> FindOneWayLayoverCont(
+			@Param("airportDep") Airport aiportDep,  
+			@Param("initFlightArr") LocalDate initFlightArr
+			);
 	
 	/* find round trip non-layover flights within the time window */ 
 	

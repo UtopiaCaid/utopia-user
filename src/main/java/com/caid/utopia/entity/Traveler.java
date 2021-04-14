@@ -35,7 +35,7 @@ public class Traveler implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7585045462083179540L;
+	private static final long serialVersionUID = 2415866083993015018L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

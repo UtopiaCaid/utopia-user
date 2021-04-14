@@ -51,11 +51,11 @@ import exception.RecordNotFoundException;
 		}
 		
 		/* Find all combinations of A-B-C layover flights */
-		public List<ArrayList<Flight>> FindOneWayLayover(
+		public List<ArrayList<Flight>> FindOneWaySingleLayover(
 				Integer airportDep, Integer airportArr,
 				LocalDate flightDepBeginDate, LocalDate flightDepEndDate) {
 			try {
-				/* Start from Aiport A */
+				/* Start from Airport A */
 				List<Flight> StartFlights = flightSearchRepo.FindInitialLayover(
 						airportRepo.findById(airportDep).get(), airportRepo.findById(airportArr).get(), 
 						flightDepBeginDate, flightDepEndDate);
@@ -81,6 +81,72 @@ import exception.RecordNotFoundException;
 						}
 					}
 					
+				}
+				return FlightRoutes;
+			} catch (Exception e) {
+				throw new RecordNotFoundException();
+			}
+
+		}
+		
+		public List<ArrayList<Flight>> FindAllOneWayFlights(
+				Integer airportStart, Integer airportEnd,
+				LocalDate flightDepBeginDate, LocalDate flightDepEndDate) {
+			try {
+				/* temp max layovers */
+				Integer maxLayovers = 3;
+				/* Start from Airport A */
+				List<Flight> StartFlights = flightSearchRepo.FindOneWayLayoverInit(
+						airportRepo.findById(airportStart).get(), 
+						flightDepBeginDate, flightDepEndDate);
+				if(StartFlights.isEmpty()) {
+					return null;
+				}
+				/* Store flight routes */
+				List<ArrayList<Flight>> currentFlightRoutes = new ArrayList<ArrayList<Flight>>();
+				List<ArrayList<Flight>> FlightRoutes = new ArrayList<ArrayList<Flight>>();
+				/* Iterate through all connections from Airport B to C */
+				for(int i = 0; i < maxLayovers; i++) {
+					/* Put starting flights into the 2d list */
+					if(i == 0) {
+						ListIterator<Flight> init = StartFlights.listIterator();
+						while(init.hasNext()) {
+							ArrayList<Flight> temp = new ArrayList<>();
+							temp.add(init.next());
+							currentFlightRoutes.add(temp);
+						}
+					/* add layover flights if applicable */
+					} else {
+						List<ArrayList<Flight>> cloneTemp = new ArrayList<ArrayList<Flight>>(currentFlightRoutes);
+						ListIterator<ArrayList<Flight>> it = cloneTemp.listIterator();
+						while(it.hasNext()) {
+							currentFlightRoutes.clear();
+							ArrayList<Flight> temp = it.next();
+							/* if the current flight airport is the destination */
+							if(temp.get(temp.size()-1).getairportArrival().getAirportId() != airportEnd) {
+								ArrayList<Flight> layovers = flightSearchRepo.FindOneWayLayoverCont(
+									temp.get(temp.size()-1).getairportArrival(),
+									temp.get(temp.size()-1).getArrival());
+								/* add new flight routes to currentFlightRoutes */
+								ListIterator<Flight > it2 = layovers.listIterator();
+								while(it2.hasNext()) {
+									ArrayList<Flight> temp2 = new ArrayList<Flight>(temp);
+									temp2.add(it2.next());
+									currentFlightRoutes.add(temp2);
+								}
+							} else {
+								FlightRoutes.add(temp);
+							}
+						}
+					}
+					if(i == maxLayovers-1) {
+						ListIterator<ArrayList<Flight>> it = currentFlightRoutes.listIterator();
+						while(it.hasNext()) {
+							ArrayList<Flight> temp = it.next();
+							if (temp.get(temp.size()-1).getairportArrival().getAirportId() == airportEnd)
+							{ FlightRoutes.add(temp); }
+						}
+					}
 				}
 				return FlightRoutes;
 			} catch (Exception e) {

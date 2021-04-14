@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.entity.Flight;
-import com.caid.utopia.entity.flightSearch.OneWayBody;
-import com.caid.utopia.entity.flightSearch.RoundTripBody;
+import com.caid.utopia.entity.userRequestBody.OneWayBody;
+import com.caid.utopia.entity.userRequestBody.RoundTripBody;
 
 
 public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
@@ -48,7 +48,7 @@ public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void FindOneWayLayovers() throws Exception {
-		String uri = "/OneWayLayover";
+		String uri = "/OneWayAllLayovers";
 		OneWayBody body = new OneWayBody();
 		body.setAirportDepId(1);
 		body.setAirportArrId(2);

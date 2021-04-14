@@ -27,10 +27,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "tbl_airports")
 public class Airport implements Serializable {
 
+
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7995772900653995693L;
+	private static final long serialVersionUID = 618393560573651368L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,9 +23,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
-import com.caid.utopia.entity.flightSearch.OneWayBody;
-import com.caid.utopia.entity.flightSearch.RoundTripBody;
-import com.caid.utopia.entity.flightSearch.RoundTripBody;
+import com.caid.utopia.entity.userRequestBody.OneWayBody;
+import com.caid.utopia.entity.userRequestBody.RoundTripBody;
 import com.caid.utopia.service.FlightSearchService;
 import com.caid.utopia.service.FlightService;
 

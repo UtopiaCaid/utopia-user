@@ -23,9 +23,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
-import com.caid.utopia.entity.flightSearch.OneWayBody;
-import com.caid.utopia.entity.flightSearch.RoundTripBody;
-import com.caid.utopia.entity.flightSearch.RoundTripBody;
+import com.caid.utopia.entity.userRequestBody.OneWayBody;
+import com.caid.utopia.entity.userRequestBody.RoundTripBody;
 import com.caid.utopia.service.FlightSearchService;
 import com.caid.utopia.service.FlightService;
 
@@ -83,11 +82,29 @@ public class FlightSearchController {
 		}
 	}
 	
-	@RequestMapping(value = "/OneWayLayover", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Object> OneWayLayover(
+	@RequestMapping(value = "/OneWaySingleLayover", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Object> OneWaySingleLayover(
 			@RequestBody OneWayBody body) throws Exception{
 		try {
-			List<ArrayList<Flight>> flights = flightSearchService.FindOneWayLayover(
+			List<ArrayList<Flight>> flights = flightSearchService.FindOneWaySingleLayover(
+					body.getAirportDepId(), body.getAirportArrId(),
+					body.getFlightDepBeginDate(), body.getFlightDepEndDate());	
+			if (flights.isEmpty() || flights == null) {
+				return new ResponseEntity<>(null, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(flights, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
+	
+	/* WIP */
+	@RequestMapping(value = "/OneWayAllLayovers", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<Object> OneWayAllLayovers(
+			@RequestBody OneWayBody body) throws Exception{
+		try {
+			List<ArrayList<Flight>> flights = flightSearchService.FindAllOneWayFlights(
 					body.getAirportDepId(), body.getAirportArrId(),
 					body.getFlightDepBeginDate(), body.getFlightDepEndDate());	
 			if (flights.isEmpty() || flights == null) {
@@ -133,7 +150,7 @@ public class FlightSearchController {
 			/* Get all layover and non-layover depart flights from A -> C */
 			ArrayList<List<ArrayList<Flight>>> FlightCombinations = new ArrayList<List<ArrayList<Flight>>>(2);
 			/* get depart layover flights (A -> B -> C) */
-			List<ArrayList<Flight>> DepartFlights = flightSearchService.FindOneWayLayover(
+			List<ArrayList<Flight>> DepartFlights = flightSearchService.FindAllOneWayFlights(
 					body.getAirportDepId(), body.getAirportArrId(),
 					body.getFlightDepBeginDate(), body.getFlightDepEndDate());
 			/* get depart nonlayover flights (A -> C) */
@@ -156,7 +173,7 @@ public class FlightSearchController {
 				FlightCombinations.add(DepartFlights);
 			}
 			/* Get all layover and non-layover return flights from C -> A */
-			List<ArrayList<Flight>> ReturnFlights = flightSearchService.FindOneWayLayover(
+			List<ArrayList<Flight>> ReturnFlights = flightSearchService.FindAllOneWayFlights(
 					 body.getAirportArrId(), body.getAirportDepId(),
 					body.getFlightRetBeginDate(), body.getFlightRetEndDate());
 			/* Get all non-layover return flights */
@@ -168,7 +185,6 @@ public class FlightSearchController {
 				while(it2.hasNext()) {
 					ArrayList<Flight> temp = new ArrayList<>(1);
 					temp.add(it2.next());
-					System.out.println(temp.get(0).getFlightNo());
 					if(ReturnFlights != null) {
 						ReturnFlights.add(temp);
 					} else {	
@@ -181,7 +197,6 @@ public class FlightSearchController {
 			}
 			return new ResponseEntity<>(FlightCombinations, HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println(e);
 			return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 		}
 	}

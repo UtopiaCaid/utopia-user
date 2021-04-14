@@ -10,10 +10,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.Payment;
 import com.caid.utopia.entity.Ticket;
 import com.caid.utopia.entity.Traveler;
+import com.caid.utopia.entity.userRequestBody.AccountFlight;
+import com.caid.utopia.entity.userRequestBody.TravelerFlight;
 
 
 public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
@@ -89,26 +92,62 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	void DeleteTicketTest() throws Exception {
 		String uri = "/Ticket";
 		Ticket ticket = new Ticket();
-		Flight flight = new Flight();
-		flight.setFlightNo(1);
-		Traveler traveler = new Traveler();
-		traveler.setTravelerId(1);
-		Payment payment = new Payment();
-		payment.setPaymentId(1);
-		ticket.setFlight(flight);
-		ticket.setTraveler(traveler);
-		ticket.setPayment(payment);
-		ticket.setConfirmationCode(73145);
-		ticket.setTicketPrice(5);
+		ticket.setTicketNo(1);
 		String inputJson = super.mapToJson(ticket);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(201, status);
-		inputJson = mvcResult.getResponse().getContentAsString();
-		mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		status = mvcResult.getResponse().getStatus();
 		assertEquals(202,status);
 	}
+	
+	@Test
+	@Transactional
+	void DeleteAllAccountFlightTicketsTest() throws Exception {
+		String uri = "/Flight/Account/Tickets";
+		AccountFlight body = new AccountFlight();
+		Account account = new Account();
+		Flight flight = new Flight();
+		account.setAccountNumber(1);
+		flight.setFlightNo(1);
+		body.setAccount(account);
+		body.setFlight(flight);
+		String inputJson = super.mapToJson(body);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+	
+	@Test
+	@Transactional
+	void DeleteAllTravelerTicketsTest() throws Exception {
+		String uri = "/Flight/Traveler/Tickets";
+		Traveler traveler = new Traveler();
+		traveler.setTravelerId(1);
+		String inputJson = super.mapToJson(traveler);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+	
+	@Test
+	@Transactional
+	void DeleteTravelerFlightTicket() throws Exception {
+		String uri = "/Flight/Traveler/Ticket";
+		TravelerFlight body = new TravelerFlight();
+		Traveler traveler = new Traveler();
+		Flight flight = new Flight();
+		traveler.setTravelerId(1);
+		flight.setFlightNo(2);
+		body.setTraveler(traveler);
+		body.setFlight(flight);
+		String inputJson = super.mapToJson(body);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+	
+
 }

@@ -26,11 +26,10 @@ import org.springframework.lang.NonNull;
 public class Aircraft implements Serializable {
 
 
-
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3662677232024821777L;
+	private static final long serialVersionUID = -2324728444189713748L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

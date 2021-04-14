@@ -35,7 +35,7 @@ public class Flight implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3634923359976670872L;
+	private static final long serialVersionUID = 6063208213215353024L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

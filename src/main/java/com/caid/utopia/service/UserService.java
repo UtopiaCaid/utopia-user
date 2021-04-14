@@ -1,9 +1,12 @@
 package com.caid.utopia.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.AccountRole;
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.Ticket;
+import com.caid.utopia.entity.Traveler;
 import com.caid.utopia.entity.Account;
 import com.caid.utopia.repo.AccountRepo;
 import com.caid.utopia.repo.AccountRoleRepo;
@@ -143,46 +147,62 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		/* Update Account */
-		public Account updateAccount(Account account) throws RecordUpdateException {
+		/* Return arraylist of available class seats for a flight */
+		public ArrayList<Integer> getFlightAvailableSeats(Flight flight) throws RecordNotFoundException {
 			try {
-				if(accountRepo.findById(account.getAccountNumber()).isEmpty()) {
-					throw new RecordUpdateException();
+				if(flightRepo.findById(flight.getFlightNo()).isEmpty()) {
+					throw new RecordNotFoundException();
 				}
-				Account temp = accountRepo.findById(account.getAccountNumber()).get();
-				String email = account.getEmail();
-				String username = account.getUsername();
-				String password = account.getPassword();
-				if(email != null && email.length() >= 3 && email.length() <= 45) {
-					temp.setEmail(email);
-				}
-				if(username != null && username.length() > 0 && username.length() <= 45) {
-					temp.setUsername(username);
-				}
-				if(password != null && password.length() > 0 && password.length() <= 100) {
-					temp.setPassword(password);
-				}
-				return accountRepo.save(temp);
-			}catch(Exception e) {
+				flight = flightRepo.findById(flight.getFlightNo()).get();
+				ArrayList<Integer> seats = new ArrayList<Integer>(3);
+				seats.add(0, (flight.getAircraft().getFirstClassCount() == null 
+						? 0 
+						: flight.getAircraft().getFirstClassCount()) - ticketRepo.FindFirstClassTicketsCount(flight));
+				seats.add(1, (flight.getAircraft().getSecondClassCount() == null 
+						? 0 
+						: flight.getAircraft().getSecondClassCount()) - ticketRepo.FindSecondClassTicketsCount(flight));
+				seats.add(2, (flight.getAircraft().getThirdClassCount() == null 
+						? 0 
+						: flight.getAircraft().getThirdClassCount()) - ticketRepo.FindThirdClassTicketsCount(flight));
+				return seats;
+			} catch (Exception e) {
 				throw e;
 			}
 		}
 		
-		/* Deactivate Account */
-		public Account deactivateAccount(Account account) throws RecordUpdateException {
-			try {
-				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
-				if(temp.isEmpty()) {
-					throw new RecordNotFoundException();
-				}
-				account = temp.get();
-				account.setRole(accountRoleRepo.findById(3).get());
-				account.setEmail(null);
-				account.setPassword(null);
-				account.setUsername(null);
-				return accountRepo.save(account);
-			}catch(Exception e) {
-				throw e;
+		/* cancel all of an account's traveler tickets for a specific flight */
+		@Transactional
+		public void deleteAllAccountFlightTickets(Account account, Flight flight) throws RecordNotFoundException{
+			account = accountRepo.findById(account.getAccountNumber()).get();
+			flight = flightRepo.findById(flight.getFlightNo()).get();
+			List<Ticket> tickets = ticketRepo.DeleteAllAccountFlightTickets(account, flight);
+			if(!tickets.isEmpty()) {
+				ticketRepo.deleteInBatch(tickets);
 			}
+			/* REFUND PAYMENT WIP */
+		}
+		/* cancel all flight tickets for a traveler */
+		
+		@Transactional
+		public void DeleteAllTravelerTickets(Traveler traveler) throws RecordNotFoundException{
+			traveler = travelerRepo.findById(traveler.getTravelerId()).get();
+			List<Ticket> tickets = ticketRepo.DeleteAllTravelerTickets(traveler);
+			if(!tickets.isEmpty()) {
+				ticketRepo.deleteInBatch(tickets);
+			}
+			/* REFUND PAYMENT WIP */
+		}
+		/* cancel a flight ticket for a traveler */
+		@Transactional
+		public void DeleteFlightTicket(Traveler traveler, Flight flight) throws RecordNotFoundException{
+			traveler = travelerRepo.findById(traveler.getTravelerId()).get();
+			flight = flightRepo.findById(flight.getFlightNo()).get();
+			List<Ticket> tickets = ticketRepo.DeleteTravelerFlightTicket(traveler, flight);
+			if(tickets.size() != 1) {
+				throw new RecordNotFoundException();
+			} else {
+				ticketRepo.delete(tickets.get(0));
+			}
+			/* REFUND PAYMENT WIP */
 		}
 	}

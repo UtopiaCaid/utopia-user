@@ -32,10 +32,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Account implements Serializable {
 
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6767878543794004350L;
+	private static final long serialVersionUID = -5780759178456802778L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
