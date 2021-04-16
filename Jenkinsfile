@@ -23,12 +23,12 @@ pipeline {
             steps {
                 echo 'Deploying....' 
                 sh "$AWS_LOGIN"
-                sh "docker build -t utopia-admin:$COMMIT_HASH ."
+                sh "docker build -t utopia-user:$COMMIT_HASH ."
                 sh 'docker images'
               
-                sh "docker tag utopia-admin:$COMMIT_HASH $AWS_ID/utopia-admin:$COMMIT_HASH"
+                sh "docker tag utopia-user:$COMMIT_HASH $AWS_ID/utopia-user:$COMMIT_HASH"
 
-                sh "docker push $AWS_ID/utopia-admin:$COMMIT_HASH"              
+                sh "docker push $AWS_ID/utopia-user:$COMMIT_HASH"              
             }
         }
 
