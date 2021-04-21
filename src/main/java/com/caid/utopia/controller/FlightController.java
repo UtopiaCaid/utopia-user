@@ -25,7 +25,6 @@ import org.springframework.web.util.WebUtils;
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.userRequestBody.OneWayBody;
 import com.caid.utopia.entity.userRequestBody.RoundTripBody;
-import com.caid.utopia.service.FlightSearchService;
 import com.caid.utopia.service.FlightService;
 
 import exception.FlightByIdException;
@@ -44,9 +43,6 @@ public class FlightController {
 
 	@Autowired
 	FlightService flightService;
-	
-	@Autowired
-	FlightSearchService flightSearchService;
 	
 
 	protected ResponseEntity<Object> handleExceptionInternal(
@@ -76,5 +72,41 @@ public class FlightController {
 	public ResponseEntity<Flight> getFlight(@PathVariable Integer flightId){
 		Flight flights = flightService.getFlightById(flightId);
 		return new ResponseEntity<>(flights, HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(FlightCreationException.class)
+	@RequestMapping(value = "/flights", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Flight> flightInsertion(@RequestBody Flight newFlight) {
+		Flight updatedFlights = flightService.addFlight(newFlight);
+		if (updatedFlights.getFlightNo() == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(newFlight, HttpStatus.OK);
+		}			
+	}
+	
+	@ExceptionHandler(FlightDeletionException.class)
+	@RequestMapping(value = "/flights", method = RequestMethod.DELETE, consumes = "application/json")
+	public ResponseEntity<Flight> flightDeletion(@RequestBody Flight flights) {
+		if(flights.getFlightNo() == null) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+		List <Flight> updatedFlights = flightService.deleteFlight(flights);
+		if (updatedFlights.contains(flights.getFlightNo())){
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		} else {
+			return new ResponseEntity<>(flights, HttpStatus.OK);
+		}
+	}
+	
+	@ExceptionHandler(FlightDetailsException.class)
+	@RequestMapping(value = "/flights", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<Flight> flightDetailsUpdate(@RequestBody Flight flight) {
+		List <Flight> updatedFlights = flightService.updateFlight(flight);
+		if(updatedFlights.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		} else {
+			return new ResponseEntity<>(flight, HttpStatus.OK);
+		}
 	}
 }

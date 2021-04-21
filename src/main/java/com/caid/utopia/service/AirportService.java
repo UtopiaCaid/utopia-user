@@ -96,7 +96,11 @@ import exception.RecordUpdateException;
 				if(city != null && city.length() > 0 && city.length() <= 45) {
 					updatedAirport.setCity(city);
 				}
+<<<<<<< HEAD
 				String airportName = airport.getAirportName	();
+=======
+				String airportName = airport.getAirportName();
+>>>>>>> development
 				if(airportName != null && airportName.length() > 0 && airportName.length() <= 45) {
 					updatedAirport.setAirportName(airportName);
 				}

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.caid.utopia.entity.Airport;
 
+
 @Repository
 public interface AirportRepo extends JpaRepository<Airport, Integer>{
 

@@ -5,13 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(
 		value = HttpStatus.BAD_REQUEST,
-		reason = "Error when updating flight"
+		reason = "Error when updating flight plane"
 	)
 
-public class FlightDetailsException extends RuntimeException{
+public class updateFlightPlaneException extends RuntimeException{
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> development

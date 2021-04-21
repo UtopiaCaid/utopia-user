@@ -16,7 +16,10 @@ import exception.FlightByIdException;
 import exception.FlightCreationException;
 import exception.FlightDeletionException;
 import exception.FlightDetailsException;
+<<<<<<< HEAD
 import exception.RecordHasDependenciesException;
+=======
+>>>>>>> development
 import exception.RecordNotFoundException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -88,4 +91,8 @@ public class FlightService {
 	}
 	
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> development
