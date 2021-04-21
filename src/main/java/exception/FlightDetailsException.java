@@ -10,8 +10,4 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class FlightDetailsException extends RuntimeException{
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> development
