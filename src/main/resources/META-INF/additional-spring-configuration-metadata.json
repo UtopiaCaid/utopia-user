@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "message.utopia.alb.dns",
+  "type": "java.lang.String",
+  "description": "'message.alb.dns' is a poperty to be included as an environment variable that holds the DNS of the Application Load Balancer on AWS for inter-microservice requests"
+}]}
