@@ -51,12 +51,12 @@ pipeline {
                 sh "docker push $AWS_ID/utopia-user:$COMMIT_HASH"
             }
         }
-
-        steps {
-                sh 'chmod +x ./aws-cf-deploy.sh'
-                sh './aws-cf-deploy.sh'
+        stage('Deploy') {
+            steps {
+                    sh 'chmod +x ./aws-cf-deploy.sh'
+                    sh './aws-cf-deploy.sh'
+            }
         }
-
         stage('Cleanup') {
             steps {
                 sh 'docker system prune -f'
