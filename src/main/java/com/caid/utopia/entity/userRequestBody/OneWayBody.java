@@ -1,14 +1,14 @@
 package com.caid.utopia.entity.userRequestBody;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.caid.utopia.entity.Airport;
 
 public class OneWayBody {
 	private Integer airportDepId;
 	private Integer airportArrId;
-	private LocalDate flightDepBeginDate;
-	private LocalDate flightDepEndDate;
+	private LocalDateTime flightDepBeginDate;
+	private LocalDateTime flightDepEndDate;
 	
 	public Integer getAirportDepId() {
 		return airportDepId;
@@ -22,16 +22,16 @@ public class OneWayBody {
 	public void setAirportArrId(Integer airportArrId) {
 		this.airportArrId = airportArrId;
 	}
-	public LocalDate getFlightDepBeginDate() {
+	public LocalDateTime getFlightDepBeginDate() {
 		return flightDepBeginDate;
 	}
-	public void setFlightDepBeginDate(LocalDate flightDepBeginDate) {
+	public void setFlightDepBeginDate(LocalDateTime flightDepBeginDate) {
 		this.flightDepBeginDate = flightDepBeginDate;
 	}
-	public LocalDate getFlightDepEndDate() {
+	public LocalDateTime getFlightDepEndDate() {
 		return flightDepEndDate;
 	}
-	public void setFlightDepEndDate(LocalDate flightDepEndDate) {
+	public void setFlightDepEndDate(LocalDateTime flightDepEndDate) {
 		this.flightDepEndDate = flightDepEndDate;
 	}
 }

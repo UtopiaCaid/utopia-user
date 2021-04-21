@@ -28,6 +28,7 @@ import exception.RecordUpdateException;
 import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class TicketController {
 	

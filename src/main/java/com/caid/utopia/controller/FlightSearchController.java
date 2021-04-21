@@ -1,27 +1,19 @@
 package com.caid.utopia.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.util.WebUtils;
-
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.userRequestBody.OneWayBody;
 import com.caid.utopia.entity.userRequestBody.RoundTripBody;
@@ -29,10 +21,6 @@ import com.caid.utopia.service.FlightSearchService;
 import com.caid.utopia.service.FlightService;
 
 import exception.ExceptionReducer;
-import exception.FlightByIdException;
-import exception.FlightCreationException;
-import exception.FlightDeletionException;
-import exception.FlightDetailsException;
 import exception.RecordAlreadyExistsException;
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
@@ -42,6 +30,7 @@ import exception.RecordUpdateException;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class FlightSearchController {
 	
@@ -65,7 +54,7 @@ public class FlightSearchController {
 	
 
 	
-	@RequestMapping(value = "/OneWayNonLayover", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/OneWayNonLayover", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Object> OneWayNoLayover (
 			@RequestBody OneWayBody body) throws Exception{
 		try {
@@ -82,25 +71,8 @@ public class FlightSearchController {
 		}
 	}
 	
-	@RequestMapping(value = "/OneWaySingleLayover", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Object> OneWaySingleLayover(
-			@RequestBody OneWayBody body) throws Exception{
-		try {
-			List<ArrayList<Flight>> flights = flightSearchService.FindOneWaySingleLayover(
-					body.getAirportDepId(), body.getAirportArrId(),
-					body.getFlightDepBeginDate(), body.getFlightDepEndDate());	
-			if (flights.isEmpty() || flights == null) {
-				return new ResponseEntity<>(null, HttpStatus.OK);
-			}else {
-				return new ResponseEntity<>(flights, HttpStatus.OK);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
 	/* WIP */
-	@RequestMapping(value = "/OneWayAllLayovers", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/OneWayAllLayover", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Object> OneWayAllLayovers(
 			@RequestBody OneWayBody body) throws Exception{
 		try {
@@ -117,7 +89,7 @@ public class FlightSearchController {
 		}
 	}
 	
-	@RequestMapping(value = "/RoundTripNoLayover", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/RoundTripNoLayover", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Object> RoundTripBodysNoLayovers(
 			@RequestBody RoundTripBody body) throws Exception{
 		try {
@@ -143,7 +115,7 @@ public class FlightSearchController {
 		}
 	}
 	
-	@RequestMapping(value = "/RoundTripLayovers", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/RoundTripLayovers", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<List<List<ArrayList<Flight>>>> RoundTripLayovers(
 			@RequestBody RoundTripBody body) throws Exception{
 		try {

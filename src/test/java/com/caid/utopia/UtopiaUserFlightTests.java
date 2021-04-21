@@ -27,7 +27,7 @@ public class UtopiaUserFlightTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	public void flightRetrievalTest() throws Exception {
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();

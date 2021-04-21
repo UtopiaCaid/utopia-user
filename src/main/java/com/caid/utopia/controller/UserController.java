@@ -35,6 +35,7 @@ import exception.RecordUpdateException;
 import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class UserController {
 	
@@ -59,7 +60,7 @@ public class UserController {
 	}
 	
 	/* get account flight history */
-	@RequestMapping(value = "/Account/Flight/History", method = RequestMethod.GET, produces = "application/json", consumes = "application/json") 
+	@RequestMapping(value = "/Account/Flight/History", method = RequestMethod.POST, produces = "application/json", consumes = "application/json") 
 	public ResponseEntity<Object> getAccountFlightHistory(@RequestBody Account account) throws Exception {
 		try {
 			account = accountService.getAccountById(account.getAccountNumber());
@@ -75,7 +76,7 @@ public class UserController {
 	}	
 	
 	/* get account upcoming flights */
-	@RequestMapping(value = "/Account/Flight", method = RequestMethod.GET, produces = "application/json", consumes = "application/json") 
+	@RequestMapping(value = "/Account/Flight", method = RequestMethod.POST, produces = "application/json", consumes = "application/json") 
 	public ResponseEntity<Object> getAccountUpcomingFlights(@RequestBody Account account) throws Exception {
 		try {
 			account = accountService.getAccountById(account.getAccountNumber());
@@ -91,7 +92,7 @@ public class UserController {
 	}
 	
 	/* get account ticket history */
-	@RequestMapping(value = "/Account/Ticket/History", method = RequestMethod.GET, produces = "application/json", consumes = "application/json") 
+	@RequestMapping(value = "/Account/Ticket/History", method = RequestMethod.POST, produces = "application/json", consumes = "application/json") 
 	public ResponseEntity<Object> getAccountTickets(@RequestBody Account account) throws Exception {
 		try {
 			account = accountService.getAccountById(account.getAccountNumber());
@@ -107,7 +108,7 @@ public class UserController {
 	}
 	
 	/* get account upcoming tickets */
-	@RequestMapping(value = "/Account/Ticket", method = RequestMethod.GET, produces = "application/json", consumes = "application/json") 
+	@RequestMapping(value = "/Account/Ticket", method = RequestMethod.POST, produces = "application/json", consumes = "application/json") 
 	public ResponseEntity<Object> getAccountUpcomingTickets(@RequestBody Account account) throws Exception {
 		try {
 			account = accountService.getAccountById(account.getAccountNumber());
@@ -123,7 +124,7 @@ public class UserController {
 	}
 	
 	/* get account travelers */
-	@RequestMapping(value = "/Account/Traveler", method = RequestMethod.GET, produces = "application/json", consumes = "application/json") 
+	@RequestMapping(value = "/Account/Traveler", method = RequestMethod.POST, produces = "application/json", consumes = "application/json") 
 	public ResponseEntity<Object> getAccountTravelers(@RequestBody Account account) throws Exception {
 		try {
 			account = accountService.getAccountById(account.getAccountNumber());
@@ -140,7 +141,7 @@ public class UserController {
 	}
 	
 	/* get flight available seats */
-	@RequestMapping(value = "/Flight/Seats", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/Flight/Seats", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> getFlightAvailableSeats(@RequestBody Flight flight) throws Exception {
 		try {
 			return new ResponseEntity<>(userService.getFlightAvailableSeats(flight), HttpStatus.OK);

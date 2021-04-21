@@ -27,11 +27,10 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 		super.setUp();
 	}
 	
-	/* Controller Tests */
 	@Test
 	@Transactional
 	void CreateTicketTest() throws Exception {
-		String uri = "/Ticket";
+		String uri = "/user/Ticket";
 		Ticket ticket = new Ticket();
 		Flight flight = new Flight();
 		flight.setFlightNo(1);
@@ -53,7 +52,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void ReadTicketTest() throws Exception {
-		String uri = "/Ticket";
+		String uri = "/user/Ticket";
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
 				.andReturn();
@@ -68,7 +67,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void UpdateTicketTest() throws Exception {
-		String uri = "/Ticket";
+		String uri = "/user/Ticket";
 		Ticket ticket = new Ticket();
 		ticket.setTicketNo(1);
 		Flight flight = new Flight();
@@ -90,7 +89,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void DeleteTicketTest() throws Exception {
-		String uri = "/Ticket";
+		String uri = "/user/Ticket";
 		Ticket ticket = new Ticket();
 		ticket.setTicketNo(1);
 		String inputJson = super.mapToJson(ticket);
@@ -103,7 +102,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void DeleteAllAccountFlightTicketsTest() throws Exception {
-		String uri = "/Flight/Account/Tickets";
+		String uri = "/user/Flight/Account/Tickets";
 		AccountFlight body = new AccountFlight();
 		Account account = new Account();
 		Flight flight = new Flight();
@@ -121,7 +120,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void DeleteAllTravelerTicketsTest() throws Exception {
-		String uri = "/Flight/Traveler/Tickets";
+		String uri = "/user/Flight/Traveler/Tickets";
 		Traveler traveler = new Traveler();
 		traveler.setTravelerId(1);
 		String inputJson = super.mapToJson(traveler);
@@ -134,7 +133,7 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void DeleteTravelerFlightTicket() throws Exception {
-		String uri = "/Flight/Traveler/Ticket";
+		String uri = "/user/Flight/Traveler/Ticket";
 		TravelerFlight body = new TravelerFlight();
 		Traveler traveler = new Traveler();
 		Flight flight = new Flight();

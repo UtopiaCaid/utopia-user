@@ -4,7 +4,7 @@
 package com.caid.utopia.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -69,11 +69,11 @@ public class Flight implements Serializable {
 	
 	@Column(name = "departure")
 	@NonNull
-	private LocalDate departure;
+	private LocalDateTime departure;
 	
 	@Column(name = "arrival")
 	@NonNull
-	private LocalDate arrival;
+	private LocalDateTime arrival;
 	
 	@Column(name = "status", length = 45)
 	@NonNull
@@ -129,19 +129,19 @@ public class Flight implements Serializable {
 		this.basePrice = basePrice;
 	}
 
-	public LocalDate getDeparture() {
+	public LocalDateTime getDeparture() {
 		return departure;
 	}
 
-	public void setDeparture(LocalDate departure) {
+	public void setDeparture(LocalDateTime departure) {
 		this.departure = departure;
 	}
 
-	public LocalDate getArrival() {
+	public LocalDateTime getArrival() {
 		return arrival;
 	}
 
-	public void setArrival(LocalDate arrival) {
+	public void setArrival(LocalDateTime arrival) {
 		this.arrival = arrival;
 	}
 

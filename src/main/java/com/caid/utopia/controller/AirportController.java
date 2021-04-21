@@ -28,6 +28,7 @@ import exception.RecordUpdateException;
 import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class AirportController {
 	
@@ -71,50 +72,4 @@ public class AirportController {
 			return new ResponseEntity<>(airport, HttpStatus.OK);
 		}	
 	}
-	
-	
-	/* create record */
-	/*
-	@Transactional
-	@RequestMapping(value = "/Airport", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> createAirport(@RequestBody Airport airport) throws Exception {
-		try {
-			if(airportService.createAirport(airport) instanceof Airport) {
-				return new ResponseEntity<>(airport, HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	*/
-	/* update record */
-	/*
-	@Transactional
-	@RequestMapping(value = "/Airport", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> updateAirport(@RequestBody Airport airport) throws Exception {
-		try {
-			if(airportService.updateAirport(airport) instanceof Airport) {
-				return new ResponseEntity<>(airport, HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	*/
-	/*
-	@Transactional
-	@RequestMapping(value = "/Airport", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> deleteAirport(@RequestBody Airport airport) throws Exception {
-		try {
-			airportService.deleteAirport(airport);
-			return new ResponseEntity<>(airport, HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	*/
 }

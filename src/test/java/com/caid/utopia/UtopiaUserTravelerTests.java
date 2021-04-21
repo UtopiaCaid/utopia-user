@@ -27,11 +27,10 @@ public class UtopiaUserTravelerTests extends UtopiaUserApplicationTests {
 		super.setUp();
 	}
 	
-	/* Controller Tests */
 	@Test
 	@Transactional
 	void CreateTravelerTest() throws Exception {
-		String uri = "/Traveler";
+		String uri = "/user/Traveler";
 		Traveler traveler = new Traveler();
 		Account account = new Account();
 		account.setAccountNumber(1);
@@ -55,7 +54,7 @@ public class UtopiaUserTravelerTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void ReadTravelerTest() throws Exception {
-		String uri = "/Traveler";
+		String uri = "/user/Traveler";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
 				.andReturn();
 
@@ -69,7 +68,7 @@ public class UtopiaUserTravelerTests extends UtopiaUserApplicationTests {
 	@Test
 	@Transactional
 	void UpdateTravelerTest() throws Exception {
-		String uri = "/Traveler";
+		String uri = "/user/Traveler";
 		Traveler traveler = new Traveler();
 		traveler.setTravelerId(1);
 		String middleName = "middlestopher";

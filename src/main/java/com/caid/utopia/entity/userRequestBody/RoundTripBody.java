@@ -1,14 +1,14 @@
 package com.caid.utopia.entity.userRequestBody;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class RoundTripBody {
 	private Integer airportDepId;
 	private Integer airportArrId;
-	private LocalDate flightDepBeginDate;
-	private LocalDate flightDepEndDate;
-	private LocalDate flightRetBeginDate;
-	private LocalDate flightRetEndDate;
+	private LocalDateTime flightDepBeginDate;
+	private LocalDateTime flightDepEndDate;
+	private LocalDateTime flightRetBeginDate;
+	private LocalDateTime flightRetEndDate;
 	
 	public Integer getAirportDepId() {
 		return airportDepId;
@@ -22,29 +22,29 @@ public class RoundTripBody {
 	public void setAirportArrId(Integer airportArrId) {
 		this.airportArrId = airportArrId;
 	}
-	public LocalDate getFlightDepBeginDate() {
+	public LocalDateTime getFlightDepBeginDate() {
 		return flightDepBeginDate;
 	}
-	public void setFlightDepBeginDate(LocalDate flightDepBeginDate) {
-		this.flightDepBeginDate = flightDepBeginDate;
-	}
-	public LocalDate getFlightDepEndDate() {
-		return flightDepEndDate;
-	}
-	public void setFlightDepEndDate(LocalDate flightDepEndDate) {
-		this.flightDepEndDate = flightDepEndDate;
-	}
-	
-	public LocalDate getFlightRetBeginDate() {
-		return flightRetBeginDate;
-	}
-	public void setFlightRetBeginDate(LocalDate flightRetBeginDate) {
+	public void setFlightRetBeginDate(LocalDateTime flightRetBeginDate) {
 		this.flightRetBeginDate = flightRetBeginDate;
 	}
-	public LocalDate getFlightRetEndDate() {
+	public LocalDateTime getFlightRetEndDate() {
 		return flightRetEndDate;
 	}
-	public void setFlightRetEndDate(LocalDate flightRetEndDate) {
+	public LocalDateTime getFlightDepEndDate() {
+		return flightDepEndDate;
+	}
+	public void setFlightDepEndDate(LocalDateTime flightDepEndDate) {
+		this.flightDepEndDate = flightDepEndDate;
+	}
+	public LocalDateTime getFlightRetBeginDate() {
+		return flightRetBeginDate;
+	}
+	public void setFlightDepBeginDate(LocalDateTime flightDepBeginDate) {
+		this.flightDepBeginDate = flightDepBeginDate;
+	}
+	public void setFlightRetEndDate(LocalDateTime flightRetEndDate) {
 		this.flightRetEndDate = flightRetEndDate;
 	}
 }
+

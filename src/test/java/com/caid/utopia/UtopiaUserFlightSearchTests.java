@@ -3,17 +3,13 @@ package com.caid.utopia;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.caid.utopia.entity.Aircraft;
-import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.userRequestBody.OneWayBody;
 import com.caid.utopia.entity.userRequestBody.RoundTripBody;
@@ -27,16 +23,17 @@ public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 		super.setUp();
 	}
 	
+
 	@Test
 	void FindOneWayNoLayovers() throws Exception {
-		String uri = "/OneWayNonLayover";
+		String uri = "/user/OneWayNonLayover";
 		OneWayBody body = new OneWayBody();
 		body.setAirportDepId(1);
 		body.setAirportArrId(2);
-		body.setFlightDepBeginDate(LocalDate.parse("2021-04-01"));
-		body.setFlightDepEndDate(LocalDate.parse("2021-04-20"));
+		body.setFlightDepBeginDate(LocalDateTime.of(2021,4,1,0,0,0));
+		body.setFlightDepEndDate(LocalDateTime.of(2021,4,21,0,0,0));
 		String inputJson = super.mapToJson(body);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();
 		int status = mvcResult.getResponse().getStatus();
@@ -48,14 +45,14 @@ public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void FindOneWayLayovers() throws Exception {
-		String uri = "/OneWayAllLayovers";
+		String uri = "/user/OneWayAllLayover";
 		OneWayBody body = new OneWayBody();
 		body.setAirportDepId(1);
 		body.setAirportArrId(2);
-		body.setFlightDepBeginDate(LocalDate.parse("2021-04-01"));
-		body.setFlightDepEndDate(LocalDate.parse("2021-04-20"));
+		body.setFlightDepBeginDate(LocalDateTime.of(2021,4,1,0,0,0));
+		body.setFlightDepEndDate(LocalDateTime.of(2021,4,21,0,0,0));
 		String inputJson = super.mapToJson(body);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();
 		int status = mvcResult.getResponse().getStatus();
@@ -67,16 +64,16 @@ public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void FindRoundTripNoLayovers() throws Exception {
-		String uri = "/RoundTripNoLayover";
+		String uri = "/user/RoundTripNoLayover";
 		RoundTripBody body = new RoundTripBody();
 		body.setAirportDepId(1);
 		body.setAirportArrId(2);
-		body.setFlightDepBeginDate(LocalDate.parse("2021-04-01"));
-		body.setFlightDepEndDate(LocalDate.parse("2021-04-20"));
-		body.setFlightRetBeginDate(LocalDate.parse("2021-04-19"));
-		body.setFlightRetEndDate(LocalDate.parse("2021-04-25"));
+		body.setFlightDepBeginDate(LocalDateTime.of(2021,4,1,0,0,0));
+		body.setFlightDepEndDate(LocalDateTime.of(2021,4,21,0,0,0));
+		body.setFlightRetBeginDate(LocalDateTime.of(2021,4,19,0,0,0));
+		body.setFlightRetEndDate(LocalDateTime.of(2021,4,25,0,0,0));
 		String inputJson = super.mapToJson(body);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();
 		int status = mvcResult.getResponse().getStatus();
@@ -88,16 +85,16 @@ public class UtopiaUserFlightSearchTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	void FindRoundTripLayovers() throws Exception {
-		String uri = "/RoundTripLayovers";
+		String uri = "/user/RoundTripLayovers";
 		RoundTripBody body = new RoundTripBody();
 		body.setAirportDepId(1);
 		body.setAirportArrId(2);
-		body.setFlightDepBeginDate(LocalDate.parse("2021-04-01"));
-		body.setFlightDepEndDate(LocalDate.parse("2021-04-14"));
-		body.setFlightRetBeginDate(LocalDate.parse("2021-04-15"));
-		body.setFlightRetEndDate(LocalDate.parse("2021-04-25"));
+		body.setFlightDepBeginDate(LocalDateTime.of(2021,4,1,0,0,0));
+		body.setFlightDepEndDate(LocalDateTime.of(2021,4,14,0,0,0));
+		body.setFlightRetBeginDate(LocalDateTime.of(2021,4,15,0,0,0));
+		body.setFlightRetEndDate(LocalDateTime.of(2021,4,25,0,0,0));
 		String inputJson = super.mapToJson(body);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
 				.andReturn();
 		int status = mvcResult.getResponse().getStatus();

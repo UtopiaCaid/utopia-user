@@ -28,6 +28,7 @@ import exception.RecordUpdateException;
 import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class AccountController {
 	
@@ -102,20 +103,6 @@ public class AccountController {
 			return handleException(e);
 		}
 	}
-	
-	/* delete record */
-	/*
-	@Transactional
-	@RequestMapping(value = "/Account", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> deleteAccount(@RequestBody Account account) throws Exception {
-		try {
-			accountService.deleteAccount(account);
-			return new ResponseEntity<>(account, HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	*/
 	
 	/* deactivate record */
 	@Transactional
