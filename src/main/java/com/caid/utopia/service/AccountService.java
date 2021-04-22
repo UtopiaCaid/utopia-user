@@ -13,9 +13,11 @@ import com.caid.utopia.repo.AccountRoleRepo;
 import com.caid.utopia.repo.AccountRepo;
 import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.repo.PaymentRepo;
+import com.caid.utopia.repo.TravelerRepo;
 
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 import exception.RecordUpdateException;
 
@@ -27,7 +29,10 @@ import exception.RecordUpdateException;
 		FlightRepo flightsRepo;
 		
 		@Autowired
-		PaymentRepo paymentsRepo;
+		PaymentRepo paymentRepo;
+		
+		@Autowired
+		TravelerRepo travelerRepo;
 		
 		@Autowired
 		AccountRepo accountRepo;
@@ -100,8 +105,8 @@ import exception.RecordUpdateException;
 				}
 				Account temp = accountRepo.findById(account.getAccountNumber()).get();
 				String email = account.getEmail();
-				String username = account.getEmail();
-				String password = account.getEmail();
+				String username = account.getUsername();
+				String password = account.getPassword();
 				if(email != null && email.length() >= 3 && email.length() <= 45) {
 					temp.setEmail(email);
 				}
@@ -117,7 +122,26 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		/* Delete Ticket */
+		/* Deactivate Account */
+		public Account deactivateAccount(Account account) throws RecordUpdateException {
+			try {
+				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
+				if(temp.isEmpty()) {
+					throw new RecordNotFoundException();
+				}
+				account = temp.get();
+				account.setRole(accountRoleRepo.findById(3).get());
+				account.setEmail(null);
+				account.setPassword(null);
+				account.setUsername(null);
+				return accountRepo.save(account);
+			}catch(Exception e) {
+				throw e;
+			}
+		}
+		
+		/* Delete Account */
+		/*
 		public void deleteAccount(Account account) throws RecordUpdateException {
 			try {
 				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
@@ -125,9 +149,15 @@ import exception.RecordUpdateException;
 					throw new RecordNotFoundException();
 				}
 				account = temp.get();
-				accountRepo.delete(account);
+				if(travelerRepo.AccountHasTravelers(account).isEmpty()
+						&& paymentRepo.AccountHasPayments(account).isEmpty()) {
+					accountRepo.delete(account);
+				} else {
+					throw new RecordHasDependenciesException();
+				}
 			}catch(Exception e) {
 				throw e;
 			}
 		}
+		*/
 	}

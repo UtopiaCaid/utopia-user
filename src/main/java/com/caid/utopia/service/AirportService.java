@@ -15,6 +15,7 @@ import com.caid.utopia.repo.FlightRepo;
 import exception.RecordAlreadyExistsException;
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
+import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 import exception.RecordUpdateException;
 
@@ -26,7 +27,7 @@ import exception.RecordUpdateException;
 		FlightRepo FlightsRepo;
 		
 		@Autowired
-		FlightRepo flightsRepo;
+		FlightRepo flightRepo;
 		
 		@Autowired
 		AirportRepo airportRepo;
@@ -117,7 +118,11 @@ import exception.RecordUpdateException;
 					throw new RecordNotFoundException();
 				}
 				airport = temp.get();
-				airportRepo.delete(airport);
+				if(flightRepo.AirportHasFlights(airport).isEmpty()) {
+					airportRepo.delete(airport);
+				} else {
+					throw new RecordHasDependenciesException();
+				}
 			}catch(Exception e) {
 				throw e;
 			}

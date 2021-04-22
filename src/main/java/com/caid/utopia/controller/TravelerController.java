@@ -25,8 +25,10 @@ import exception.RecordForeignKeyConstraintException;
 import exception.ExceptionReducer;
 import exception.RecordAlreadyExistsException;
 import exception.RecordUpdateException;
+import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class TravelerController {
 	
@@ -40,6 +42,7 @@ public class TravelerController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
@@ -101,18 +104,5 @@ public class TravelerController {
 		} catch (Exception e) {
 			return handleException(e);
 		}
-	}
-	
-	/* delete record */
-	@Transactional
-	@RequestMapping(value = "/Traveler", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> deleteTraveler(@RequestBody Traveler traveler) throws Exception {
-		try {
-			travelerService.deleteTraveler(traveler);
-			return new ResponseEntity<>(traveler, HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-		
+	}	
 }

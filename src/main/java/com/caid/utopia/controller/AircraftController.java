@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
+import com.caid.utopia.entity.Ticket;
+import com.caid.utopia.repo.FlightRepo;
 import com.caid.utopia.service.AircraftService;
 import com.caid.utopia.service.FlightService;
 
@@ -26,8 +28,11 @@ import exception.RecordForeignKeyConstraintException;
 import exception.ExceptionReducer;
 import exception.RecordAlreadyExistsException;
 import exception.RecordUpdateException;
+import exception.RecordHasDependenciesException;
+import exception.RecordHasDependenciesException;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class AircraftController {
 	
@@ -41,6 +46,7 @@ public class AircraftController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
+		RecordHasDependenciesException.class, //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
@@ -92,91 +98,4 @@ public class AircraftController {
 			return new ResponseEntity<>(aircraftType, HttpStatus.OK);
 		}	
 	}
-	/* create record */
-	@Transactional
-	@RequestMapping(value = "/Aircraft", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> createAircraft(@RequestBody Aircraft aircraft) throws Exception {
-		try {
-			if(aircraftService.createAircraft(aircraft) instanceof Aircraft) {
-				return new ResponseEntity<>(aircraft, HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
-	@Transactional
-	@RequestMapping(value = "/AircraftType", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> createAircraftType(@RequestBody AircraftType aircraftType) throws Exception {
-		try {
-			if(aircraftService.createAircraftType(aircraftType) instanceof AircraftType) {
-				return new ResponseEntity<>(aircraftType, HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
-	/* update record */
-	@Transactional
-	@RequestMapping(value = "/Aircraft", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> updateAircraft(@RequestBody Aircraft aircraft) throws Exception {
-		try {
-			if(aircraftService.updateAircraft(aircraft) instanceof Aircraft) {
-				return new ResponseEntity<>(aircraft, HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
-	@Transactional
-	@RequestMapping(value = "/AircraftType", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> updateAircraftType(@RequestBody AircraftType aircraftType) throws Exception {
-		try {
-			if(aircraftService.updateAircraftType(aircraftType) instanceof AircraftType) {
-				return new ResponseEntity<>(aircraftType, HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
-	/* Activate/Deactivate Aircraft */
-	@Transactional
-	@RequestMapping(value = "/Aircraft/Deactivate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> deactivateAircraft(@RequestBody Aircraft aircraft) throws Exception {
-		try {
-			if(aircraftService.deactivateAircraft(aircraft) instanceof Aircraft) {
-				return new ResponseEntity<>(aircraft, HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
-	@Transactional
-	@RequestMapping(value = "/Aircraft/Activate", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<Object> activateAircraft(@RequestBody Aircraft aircraft) throws Exception {
-		try {
-			if(aircraftService.activateAircraft(aircraft) instanceof Aircraft) {
-				return new ResponseEntity<>(aircraft, HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-		} catch (Exception e) {
-			return handleException(e);
-		}
-	}
-	
 }

@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.caid.utopia.entity.Flight;
 import com.caid.utopia.entity.Payment;
+import com.caid.utopia.entity.Account;
+import com.caid.utopia.entity.AccountRole;
 import com.caid.utopia.entity.Airport;
 import com.caid.utopia.entity.Traveler;
 
 
-public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
+public class UtopiaUserAccountTests extends UtopiaUserApplicationTests {
 	
 	@Override
 	@BeforeEach
@@ -24,17 +26,18 @@ public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
 		super.setUp();
 	}
 	
-	/* Controller Tests */
 	@Test
 	@Transactional
-	void CreateAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test");
-		airport.setCity("Airport City Test");
-		airport.setStatus("Active");
-		String inputJson = super.mapToJson(airport);
+	void CreateAccountTest() throws Exception {
+		String uri = "/user/Account";
+		Account account = new Account();
+		AccountRole role = new AccountRole();
+		role.setRoleId(1);
+		account.setRole(role);
+		account.setUsername("Test username");
+		account.setPassword("93418414");
+		account.setEmail("jfwie@test.com");
+		String inputJson = super.mapToJson(account);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
@@ -42,8 +45,8 @@ public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
 	}
 	
 	@Test
-	void ReadAirportTest() throws Exception {
-		String uri = "/Airport";
+	void ReadAccountTest() throws Exception {
+		String uri = "/user/Account";
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
 				.andReturn();
@@ -51,45 +54,49 @@ public class UtopiaAdminAirportTests extends UtopiaAdminApplicationTests {
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
 		String content = mvcResult.getResponse().getContentAsString();
-		Airport[] airport = super.mapFromJson(content, Airport[].class);
-		assertTrue(airport.length >= 0);
+		Account[] account = super.mapFromJson(content, Account[].class);
+		assertTrue(account.length >= 0);
 	}
 	
 	@Test
 	@Transactional
-	void UpdateAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportId(1);
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test2");
-		airport.setCity("Airport City Test2");
-		airport.setStatus("Inactive");
-		String inputJson = super.mapToJson(airport);
+	void UpdateAccountTest() throws Exception {
+		String uri = "/user/Account";
+		Account account = new Account();
+		account.setAccountNumber(1);
+		account.setEmail("test3213123@gmail.com");
+		String inputJson = super.mapToJson(account);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(202, status);
 	}
 	
+	/*
 	@Test
 	@Transactional
-	void DeleteAirportTest() throws Exception {
-		String uri = "/Airport";
-		Airport airport = new Airport();
-		airport.setAirportCode(12345);
-		airport.setAirportName("Airport Name Test");
-		airport.setCity("Airport City Test");
-		airport.setStatus("Active");
-		String inputJson = super.mapToJson(airport);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	void DeleteAccountTest() throws Exception {
+		String uri = "/user/Account";
+		Account account = new Account();
+		account.setAccountNumber(-1);	
+		String inputJson = super.mapToJson(account);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(201, status);
-		inputJson = mvcResult.getResponse().getContentAsString();
-		mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+		assertEquals(202,status);
+	}
+	*/
+	@Test
+	@Transactional
+	void DeactivateAccountTest() throws Exception {
+		String uri = "/user/Account";
+		Account account = new Account();
+		account.setAccountNumber(1);
+		String inputJson = super.mapToJson(account);
+		uri = "/user/Account/Deactivation";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		status = mvcResult.getResponse().getStatus();
+		int status = mvcResult.getResponse().getStatus();
 		assertEquals(202,status);
 	}
 }

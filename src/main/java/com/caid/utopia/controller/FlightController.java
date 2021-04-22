@@ -1,8 +1,12 @@
 package com.caid.utopia.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.caid.utopia.entity.Flight;
+import com.caid.utopia.entity.userRequestBody.OneWayBody;
+import com.caid.utopia.entity.userRequestBody.RoundTripBody;
 import com.caid.utopia.service.FlightService;
 
 import exception.FlightByIdException;
@@ -28,6 +35,7 @@ import exception.RecordNotFoundException;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/user")
 @RestController
 public class FlightController {
 	
@@ -35,7 +43,6 @@ public class FlightController {
 
 	@Autowired
 	FlightService flightService;
-	
 	
 
 	protected ResponseEntity<Object> handleExceptionInternal(
@@ -48,7 +55,7 @@ public class FlightController {
 	}
 	
 	@ExceptionHandler(RecordNotFoundException.class)
-	@RequestMapping(value = "/flights", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping	(value = "/flights", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<Flight>> getAllFlight(){
 		List<Flight> flights = flightService.getAllFlight();
 		if (flights.size() == 0) {

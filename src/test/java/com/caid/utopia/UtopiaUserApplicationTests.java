@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,9 +20,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = UtopiaAdminApplication.class)
+@SpringBootTest(classes = UtopiaUserApplication.class)
+@TestPropertySource(
+		  locations = "classpath:application.properties"
+		)
 @WebAppConfiguration
-public abstract class UtopiaAdminApplicationTests {
+public abstract class UtopiaUserApplicationTests {
 
 	protected MockMvc mvc;
 
@@ -34,6 +38,7 @@ public abstract class UtopiaAdminApplicationTests {
 	
 	protected void setUp() {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
 	}
 
 	protected String mapToJson(Object obj) throws JsonProcessingException {

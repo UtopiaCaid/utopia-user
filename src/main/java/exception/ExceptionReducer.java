@@ -27,13 +27,19 @@ public class ExceptionReducer {
 		if (ex instanceof RecordForeignKeyConstraintException) {
 			HttpStatus status = HttpStatus.FAILED_DEPENDENCY; // 424
 			headers.add("Foreign Key Error", "No Records Found");
-			return new ResponseEntity<>("FAILED_DEPENDENCY: Invalid Associated Aircraft Type", 
+			return new ResponseEntity<>("FAILED_DEPENDENCY: Cannot delete a record with dependencies", 
 					headers, status);
 		}
 		if (ex instanceof RecordUpdateException) {
 			HttpStatus status = HttpStatus.BAD_REQUEST; // 400
 			headers.add("Unknown Key", "No Records Found");
 			return new ResponseEntity<>("BAD_REQUEST: Unknown Primary Key", 
+					headers, status);
+		}
+		if (ex instanceof RecordHasDependenciesException) {
+			HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY; // 422
+			headers.add("Dependency Error", "Cannot Delete");
+			return new ResponseEntity<>("UNPROCESSABLE_ENTITY: Other records are dependent", 
 					headers, status);
 		}
 		throw ex;

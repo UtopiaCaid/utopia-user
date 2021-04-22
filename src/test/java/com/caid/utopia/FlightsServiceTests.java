@@ -2,7 +2,7 @@ package com.caid.utopia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.entity.Airport;
 import com.caid.utopia.entity.Flight;
 
-public class FlightsServiceTests extends UtopiaAdminApplicationTests {
+public class FlightsServiceTests extends UtopiaUserApplicationTests {
 
 	@Override
 	@BeforeEach
@@ -27,7 +27,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void flightInsertionTest() throws Exception {
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		Flight flight = new Flight();
 		Airport airportIdDeparture = new Airport();
@@ -57,9 +57,9 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 		aircraftType.setManufacturer("DEHAVILLAND OF CANADA");
 		aircraft.setAircraftType(aircraftType);
 		flight.setAircraft(aircraft);
-		LocalDate departure = LocalDate.of(2020, 1, 1);
+		LocalDateTime departure = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 		flight.setDeparture(departure);
-		LocalDate arrival = LocalDate.of(2020, 1, 1);
+		LocalDateTime arrival = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 		flight.setArrival(arrival);
 		flight.setStatus("completed");
 		
@@ -79,7 +79,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void updateFlightTest() throws Exception {
-			String uri = "/flights";
+			String uri = "/user/flights";
 			
 			Flight flight = new Flight();
 			flight.setFlightNo(5);
@@ -110,9 +110,9 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 			aircraftType.setManufacturer("DEHAVILLAND OF CANADA");
 			aircraft.setAircraftType(aircraftType);
 			flight.setAircraft(aircraft);
-			LocalDate departure = LocalDate.of(2020, 1, 1);
+			LocalDateTime departure = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 			flight.setDeparture(departure);
-			LocalDate arrival = LocalDate.of(2020, 1, 1);
+			LocalDateTime arrival = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 			flight.setArrival(arrival);
 			flight.setStatus("completed");
 			
@@ -131,8 +131,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void updateFlightBadArgumentTest() throws Exception {
-		//airportIdDeparture (which is a required field) removed in this test case)
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		Flight flight = new Flight();
 		flight.setFlightNo(5);
@@ -157,9 +156,9 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 		aircraftType.setManufacturer("DEHAVILLAND OF CANADA");
 		aircraft.setAircraftType(aircraftType);
 		flight.setAircraft(aircraft);
-		LocalDate departure = LocalDate.of(2020, 1, 1);
+		LocalDateTime departure = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 		flight.setDeparture(departure);
-		LocalDate arrival = LocalDate.of(2020, 1, 1);
+		LocalDateTime arrival = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 		flight.setArrival(arrival);
 		flight.setStatus("completed");
 		
@@ -176,7 +175,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void deleteFlightTest() throws Exception {
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		Flight flight = new Flight();
 		flight.setFlightNo(5);
@@ -194,7 +193,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void deleteFlightNoIdTest() throws Exception {
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		Flight flight = new Flight();
 
@@ -211,7 +210,7 @@ public class FlightsServiceTests extends UtopiaAdminApplicationTests {
 	@Test
 	@Transactional
 	public void flightRetrievalTest() throws Exception {
-		String uri = "/flights";
+		String uri = "/user/flights";
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();

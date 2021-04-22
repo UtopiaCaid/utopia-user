@@ -5,17 +5,22 @@ package com.caid.utopia.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
@@ -27,10 +32,11 @@ import org.springframework.lang.NonNull;
 public class Account implements Serializable {
 
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6767878543794004350L;
+	private static final long serialVersionUID = -5780759178456802778L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,9 +59,21 @@ public class Account implements Serializable {
 	@NonNull
 	private String password;
 	
-	@Column(name = "date_created")
+	@Column(name = "date_created")	
 	@NonNull
 	private LocalDate dateCreated;
+
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<Traveler> travelers;
+	
+	public List<Traveler> getTravelers() {
+		return travelers;
+	}
+
+	public void setTravelers(List<Traveler> travelers) {
+		this.travelers = travelers;
+	}
 
 	public Integer getAccountNumber() {
 		return accountNumber;

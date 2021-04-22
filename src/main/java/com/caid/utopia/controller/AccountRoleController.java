@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caid.utopia.entity.Flight;
-import com.caid.utopia.entity.Airport;
-import com.caid.utopia.service.AirportService;
+import com.caid.utopia.entity.Account;
+import com.caid.utopia.entity.AccountRole;
+import com.caid.utopia.service.AccountRoleService;
+import com.caid.utopia.service.AccountService;
 import exception.RecordNotFoundException;
 import exception.RecordCreationException;
 import exception.RecordForeignKeyConstraintException;
@@ -30,11 +32,11 @@ import exception.RecordHasDependenciesException;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/user")
 @RestController
-public class AirportController {
+public class AccountRoleController {
 	
 
 	@Autowired
-	AirportService airportService;
+	AccountRoleService accountRoleService;
 	
 	@ExceptionHandler({
 		RecordNotFoundException.class, //404
@@ -42,7 +44,7 @@ public class AirportController {
 		RecordForeignKeyConstraintException.class, //409
 		RecordAlreadyExistsException.class, //409
 		RecordUpdateException.class, //400
-		RecordHasDependenciesException.class //422
+		RecordHasDependenciesException.class, //422
 	})
 	@Nullable
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
@@ -51,24 +53,25 @@ public class AirportController {
 	
 	
 	/* get all records*/
-	@RequestMapping(value = "/Airport", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<Airport>> getAllAirport(){
-		List<Airport> airport = airportService.getAllAirports();
-		if( airport.size() == 0) {
+	@RequestMapping(value = "/AccountRole", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<List<AccountRole>> getAllAccountRoles(){
+		List<AccountRole> role = accountRoleService.getAllAccountRoles();
+		System.out.println(role.size());
+		if( role.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<>(airport, HttpStatus.OK);
+			return new ResponseEntity<>(role, HttpStatus.OK);
 		}
 	}
 	
 	/* get record by id */
-	@RequestMapping(value = "/Airport/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Airport> getAirportById(@PathVariable Integer id){
-		Airport airport = airportService.getAirportById(id);
-		if(airport.getAirportId() != id) {
+	@RequestMapping(value = "/AccountRole/{id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<AccountRole> getAccountRoleById(@PathVariable Integer id){
+		AccountRole role = accountRoleService.getAccountRoleById(id);
+		if(role.getRoleId() != id) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<>(airport, HttpStatus.OK);
+			return new ResponseEntity<>(role, HttpStatus.OK);
 		}	
 	}
 }

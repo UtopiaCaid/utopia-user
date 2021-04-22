@@ -22,10 +22,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "tbl_tickets")
 public class Ticket implements Serializable {
+
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8386679197471411465L;
+	private static final long serialVersionUID = 428806740847649105L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +54,17 @@ public class Ticket implements Serializable {
 	@NonNull
 	private float ticketPrice;
 	
+	@Column(name = "ticket_class")
+	private Integer ticketClass;
+	
+	public Integer getTicketClass() {
+		return ticketClass;
+	}
+
+	public void setTicketClass(Integer ticketClass) {
+		this.ticketClass = ticketClass;
+	}
+
 	@Column(name = "date_issued")
 	@NonNull
 	private LocalDate dateIssued;

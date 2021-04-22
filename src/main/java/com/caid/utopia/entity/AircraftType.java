@@ -31,7 +31,7 @@ public class AircraftType implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2321331676252257491L;
+	private static final long serialVersionUID = 3149048715238896282L;
 
 	@Id
 	@Column(name = "aircraft_type_id")

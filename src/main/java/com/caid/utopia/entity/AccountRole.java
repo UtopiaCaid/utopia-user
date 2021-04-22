@@ -27,7 +27,7 @@ public class AccountRole implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4268274825942774616L;
+	private static final long serialVersionUID = -6141305747362820423L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
