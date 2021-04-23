@@ -72,20 +72,6 @@ public class UtopiaUserAccountTests extends UtopiaUserApplicationTests {
 		assertEquals(202, status);
 	}
 	
-	/*
-	@Test
-	@Transactional
-	void DeleteAccountTest() throws Exception {
-		String uri = "/user/Account";
-		Account account = new Account();
-		account.setAccountNumber(-1);	
-		String inputJson = super.mapToJson(account);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
-			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(202,status);
-	}
-	*/
 	@Test
 	@Transactional
 	void DeactivateAccountTest() throws Exception {
@@ -98,5 +84,32 @@ public class UtopiaUserAccountTests extends UtopiaUserApplicationTests {
 			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(202,status);
+	}
+	
+	/* role type tests */
+	@Test
+	void ReadAccountRolesTest() throws Exception {
+		String uri = "/user/AccountRole";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		String content = mvcResult.getResponse().getContentAsString();
+		AccountRole[] roles = super.mapFromJson(content, AccountRole[].class);
+		assertTrue(roles.length >= 0);
+	}
+	
+	@Test
+	void ReadAccountRoleByIdTest() throws Exception {
+		String uri = "/user/AccountRole/{id}";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri, 1).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertTrue(status == 200 || status == 204);
+		String content = mvcResult.getResponse().getContentAsString();
+		AccountRole roles = super.mapFromJson(content, AccountRole.class);
+		assertTrue(roles != null);
 	}
 }

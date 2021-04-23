@@ -65,6 +65,20 @@ public class UtopiaUserTicketTests extends UtopiaUserApplicationTests {
 	}
 	
 	@Test
+	void ReadTicketByIdTest() throws Exception {
+		String uri = "/user/Ticket/{id}";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri, 1).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertTrue(status == 200 || status == 204);
+		String content = mvcResult.getResponse().getContentAsString();
+		Ticket ticket = super.mapFromJson(content, Ticket.class);
+		assertTrue(ticket != null);
+	}
+	
+	@Test
 	@Transactional
 	void UpdateTicketTest() throws Exception {
 		String uri = "/user/Ticket";

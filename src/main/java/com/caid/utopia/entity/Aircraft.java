@@ -25,7 +25,6 @@ import org.springframework.lang.NonNull;
 @Table(name = "tbl_aircraft")
 public class Aircraft implements Serializable {
 
-
 	/**
 	 * 
 	 */

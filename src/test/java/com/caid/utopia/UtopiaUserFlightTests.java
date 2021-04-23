@@ -1,6 +1,7 @@
 package com.caid.utopia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
@@ -25,16 +26,29 @@ public class UtopiaUserFlightTests extends UtopiaUserApplicationTests {
 	}
 
 	@Test
-	@Transactional
-	public void flightRetrievalTest() throws Exception {
+	public void getFlightsTest() throws Exception {
 		String uri = "/user/flights";
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 		
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-	}
+		assertTrue(status == 200 || status == 204);
+		String content = mvcResult.getResponse().getContentAsString();
+		Flight[] flight = super.mapFromJson(content, Flight[].class);
+		assertTrue(flight.length >= 0);	}
 	
-	
+	@Test
+	public void getFlightByIdTest() throws Exception {
+		String uri = "/user/flights/{id}";
+		
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri, 1)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+		
+		int status = mvcResult.getResponse().getStatus();
+		assertTrue(status == 200 || status == 204);
+		String content = mvcResult.getResponse().getContentAsString();
+		Flight flight = super.mapFromJson(content, Flight.class);
+		assertTrue(flight != null);	
+		}	
 }
