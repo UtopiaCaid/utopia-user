@@ -56,12 +56,22 @@ public interface FlightSearchRepo extends JpaRepository<Flight, Integer>{
 	@Query("FROM Flight WHERE "
 			+ "airportDeparture = :airportDep "
 			+ "AND departure >= :flightDepBeginDate AND departure <= :flightDepEndDate "
-			+ "AND status = 'Ready'")
+			+ "AND status != 'Cancelled'")
 	List<Flight> FindOneWayLayoverInit(
 			@Param("airportDep") Airport aiportDep,  
 			@Param("flightDepBeginDate") LocalDateTime flightDepBeginDate,
 			@Param("flightDepEndDate") LocalDateTime flightDepEndDate
 			);
+	
+	@Query("FROM Flight WHERE "
+			+ "airportDeparture = :airportStart "
+			+ "AND departure > :flightArrival AND departure <= :flightNextDeparture "
+			+ "AND status != 'Cancelled'")
+	List<Flight> FindConnectingFlights (
+		@Param("airportStart") Airport airportStart,
+		@Param("flightArrival") LocalDateTime flightArrival,
+		@Param("flightNextDeparture") LocalDateTime flightNextDeparture
+	);
 	
 	/* find one way layover flights non-initia flight */
 	@Query("FROM Flight WHERE "

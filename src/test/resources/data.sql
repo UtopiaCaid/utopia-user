@@ -47,7 +47,8 @@ VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN'),(3,'DEACTIVATED');
 INSERT INTO `tbl_accounts` (`account_number`, `role_id`, `username`, `email`, `password`, `date_created`) 
 VALUES (-1,1,'defaultusername','null@null.com','null', '2021-04-03'),(1,1,'userTest332','user@user.com','user', '2020-03-23'),(2,2,'admin','admin@admin.com','admin','2020-03-23'),(5,1,'testuser','testuser1@example.com','$2a$10$0Z/BsKo5BwnCw3buTrvsd.dMm.DUEnYA1a79fgoK4ARni5j6BY41i',NULL),(20,3,NULL,NULL,NULL,'2021-03-31'),(23,2,'testadmin','testadmin1@example.com','$2a$10$t0kSH7M6pB4KuDkut.bLC.x5uPr01HvFLhw8fPfyzabuwYGe5VoQS',NULL),(27,1,'user1','user1@gmail.com','$2a$10$DZq.YksdkZlIbnbvln1qYuFwmVE5CNj2seRelgcDIiYf923CzOoeC',NULL),(28,2,'admin1',NULL,'$2a$10$n5PnGLyrY5tKOoXg16p2CeAKCMU2QFy2U7LDQUa9KGfsZho1j6q7a',NULL),(29,1,'user2','user2@gmail.com','$2a$10$LPDXBT9EcG8/JynhGLdAMu83hEYuW7lRsEtpGkbStZNqYdsSjbdWy',NULL),(39,2,'admin2',NULL,'$2a$10$lte1VavM4Q68jGTEah0U0.WwjyVy1./OTsY7uQ4zPE/vvW6ePf2jS',NULL);
 
-INSERT INTO `tbl_payments` (`payment_id`, `account_number`, `date_processed`) VALUES (1,1,'2021-03-29'),(2,1,'2021-04-07');
+INSERT INTO `tbl_payments` (`payment_id`, `account_number`, `date_processed`) 
+VALUES (1,1,'2021-03-29'),(2,1,'2021-04-07');
 
 INSERT INTO `tbl_travelers` (`traveler_id`, `account_number`, `first_name`, `dob`, `middle_name`, `last_name`, `gender`, `known_traveler_number`) 
 VALUES (1,1,'firstName','2000-05-13','middleName','lastName','M','4820'),(2,1,'firstName2','2002-02-13','toes','lastName2','F',NULL);

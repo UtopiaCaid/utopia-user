@@ -29,6 +29,12 @@ public class UtopiaUserTravelerTests extends UtopiaUserApplicationTests {
 	
 	@Test
 	@Transactional
+	void changeFlightTest() throws Exception {
+		
+	}
+	
+	@Test
+	@Transactional
 	void CreateTravelerTest() throws Exception {
 		String uri = "/user/Traveler";
 		Traveler traveler = new Traveler();

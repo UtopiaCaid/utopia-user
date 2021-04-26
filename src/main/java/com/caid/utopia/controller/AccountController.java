@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -31,7 +32,7 @@ import exception.RecordHasDependenciesException;
 @RequestMapping("/user")
 @RestController
 public class AccountController {
-	
+
 
 	@Autowired
 	AccountService accountService;
@@ -72,9 +73,9 @@ public class AccountController {
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		}	
 	}
+
 	
-	
-	/* create record */
+	/* create account */
 	@Transactional
 	@RequestMapping(value = "/Account", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Object> createAccount(@RequestBody Account account) throws Exception {

@@ -46,6 +46,7 @@ public class FlightSearchController {
 	public final ResponseEntity<Object> handleException(Exception ex) throws Exception {
 		return ExceptionReducer.handleException(ex);
 	}
+	
 	@Autowired
 	FlightService flightService;
 	
