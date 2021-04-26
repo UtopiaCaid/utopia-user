@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caid.utopia.entity.Account;
+import com.caid.utopia.entity.AccountRole;
 import com.caid.utopia.entity.Aircraft;
 import com.caid.utopia.entity.AircraftType;
 import com.caid.utopia.entity.Airport;
@@ -27,6 +28,24 @@ public class UtopiaUserServiceTests extends UtopiaUserApplicationTests {
 	@BeforeEach
 	public void setUp() {
 		super.setUp();
+	}
+	
+	@Test
+	@Transactional
+	void CreateAccountTest() throws Exception {
+		String uri = "/user/Account";
+		Account account = new Account();
+		AccountRole role = new AccountRole();
+		role.setRoleId(1);
+		account.setRole(role);
+		account.setUsername("Test username");
+		account.setPassword("93418414");
+		account.setEmail("jfwie@test.com");
+		String inputJson = super.mapToJson(account);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+			      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(201, status);
 	}
 	
 	@Test

@@ -83,30 +83,6 @@ import exception.RecordUpdateException;
 				throw e;
 			}
 		}		
-		/* Read all accounts */
-		public List<Account> getAllAccounts() throws RecordNotFoundException {
-			
-			try {
-				List<Account> account = accountRepo.findAll();
-				return account;
-			} catch (Exception e) {
-				throw new RecordNotFoundException();
-			}		
-		}
-		
-		/* Read account by id */
-		public Account getAccountById(Integer id) throws RecordNotFoundException {
-			try {
-				Optional<Account> account = accountRepo.findById(id);
-				if(account.isPresent()) {
-					return account.get();
-				} else {
-					throw new RecordNotFoundException();
-				}
-			}catch(Exception e) {
-				throw new RecordNotFoundException();
-			}
-		}
 		
 		/* Find Account Flight History (includes upcoming flights) */
 		public Set<Flight> getAccountFlightHistory(Account account) throws RecordNotFoundException {

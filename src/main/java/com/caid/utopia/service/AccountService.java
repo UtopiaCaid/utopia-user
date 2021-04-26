@@ -144,24 +144,5 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		/* Delete Account */
-		/*
-		public void deleteAccount(Account account) throws RecordUpdateException {
-			try {
-				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
-				if(temp.isEmpty()) {
-					throw new RecordNotFoundException();
-				}
-				account = temp.get();
-				if(travelerRepo.AccountHasTravelers(account).isEmpty()
-						&& paymentRepo.AccountHasPayments(account).isEmpty()) {
-					accountRepo.delete(account);
-				} else {
-					throw new RecordHasDependenciesException();
-				}
-			}catch(Exception e) {
-				throw e;
-			}
-		}
-		*/
+
 	}
