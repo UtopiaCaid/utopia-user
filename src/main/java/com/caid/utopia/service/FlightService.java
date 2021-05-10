@@ -51,41 +51,4 @@ public class FlightService {
 			throw new FlightByIdException();
 		}
 	}
-	
-
-	public Flight addFlight(Flight flight) throws FlightCreationException {
-		try {
-			 FlightRepo.save(flight);
-			 return flight;
-		} catch (Exception e) {
-			throw new FlightCreationException();
-		}
-	}
-	
-	public List<Flight> deleteFlight(Flight flights) throws FlightDeletionException {
-		try {
-			List<Ticket> tickets = TicketRepo.FlightHasTickets(flights);
-			if(tickets.size() > 0) {
-				throw new RecordHasDependenciesException();
-			}
-			FlightRepo.delete(flights);
-			return FlightRepo.findAll();
-		} catch (Exception e) {
-			throw new FlightDeletionException();
-		}
-	}
-	
-	public List<Flight> updateFlight(Flight flights) throws FlightDetailsException {
-		try {
-			if(FlightRepo.existsById(flights.getFlightNo())) {
-				FlightRepo.save(flights);
-				return FlightRepo.findAll();
-			}
-			throw new FlightDetailsException();
-		} catch (Exception e) {
-			throw new FlightDetailsException();
-		}
-	}
-	
-	
 }

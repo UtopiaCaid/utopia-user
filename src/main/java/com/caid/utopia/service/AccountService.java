@@ -4,7 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.AccountRole;
 import com.caid.utopia.entity.Account;
@@ -20,7 +24,6 @@ import exception.RecordForeignKeyConstraintException;
 import exception.RecordHasDependenciesException;
 import exception.RecordNotFoundException;
 import exception.RecordUpdateException;
-
 
 	@Service
 	public class AccountService {
@@ -64,7 +67,8 @@ import exception.RecordUpdateException;
 				}
 				temp.setEmail(email);
 				temp.setUsername(username);
-				temp.setPassword(password);
+				PasswordEncoder encoder = new BCryptPasswordEncoder();
+				temp.setPassword(encoder.encode(password));
 				temp.setDateCreated(LocalDate.now());
 				return accountRepo.save(temp);
 			}catch(Exception e) {
@@ -96,7 +100,6 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		
 		/* Update Account */
 		public Account updateAccount(Account account) throws RecordUpdateException {
 			try {
@@ -114,7 +117,8 @@ import exception.RecordUpdateException;
 					temp.setUsername(username);
 				}
 				if(password != null && password.length() > 0 && password.length() <= 100) {
-					temp.setPassword(password);
+					PasswordEncoder encoder = new BCryptPasswordEncoder();
+					temp.setPassword(encoder.encode(password));
 				}
 				return accountRepo.save(temp);
 			}catch(Exception e) {
@@ -140,24 +144,5 @@ import exception.RecordUpdateException;
 			}
 		}
 		
-		/* Delete Account */
-		/*
-		public void deleteAccount(Account account) throws RecordUpdateException {
-			try {
-				Optional<Account> temp = accountRepo.findById(account.getAccountNumber());
-				if(temp.isEmpty()) {
-					throw new RecordNotFoundException();
-				}
-				account = temp.get();
-				if(travelerRepo.AccountHasTravelers(account).isEmpty()
-						&& paymentRepo.AccountHasPayments(account).isEmpty()) {
-					accountRepo.delete(account);
-				} else {
-					throw new RecordHasDependenciesException();
-				}
-			}catch(Exception e) {
-				throw e;
-			}
-		}
-		*/
+
 	}

@@ -42,7 +42,6 @@ import exception.RecordUpdateException;
 		public Traveler createTraveler(Traveler traveler) throws RecordCreationException {
 			try {
 				/* Check field values */
-				System.out.println(traveler.getAccount().getAccountNumber());
 				Traveler temp = new Traveler();
 				Account account = accountRepo.findById(traveler.getAccount().getAccountNumber()).get();
 				if(account == null) {

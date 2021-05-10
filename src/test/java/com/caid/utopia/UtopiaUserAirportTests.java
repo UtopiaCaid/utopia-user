@@ -38,4 +38,17 @@ public class UtopiaUserAirportTests extends UtopiaUserApplicationTests {
 		assertTrue(airport.length >= 0);
 	}
 	
+	@Test
+	void ReadAirportByIdTest() throws Exception {
+		String uri = "/user/Airport/{id}";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri, 1).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertTrue(status == 200 || status == 204);
+		String content = mvcResult.getResponse().getContentAsString();
+		Airport airport = super.mapFromJson(content, Airport.class);
+		assertTrue(airport != null);
+	}
 }

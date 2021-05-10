@@ -1,9 +1,13 @@
 package com.caid.utopia.entity.userRequestBody;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.caid.utopia.entity.Account;
 import com.caid.utopia.entity.Flight;
 
 public class AccountFlight {
+	
 	Account account;
 	Flight flight;
 	public Account getAccount() {
